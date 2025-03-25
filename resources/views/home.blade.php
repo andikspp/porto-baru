@@ -281,8 +281,8 @@
                         Bachelor's student in Software Engineering at IPB University, Indonesia. I have a passion in
                         technology, especially in web development and i'm always excited to explore any new technologies
                         within the field to enhance my skills.</p>
-                    <a class="btn btn-primary" style="border-color: white; border-radius: 20px;" href="Cv/cv.pdf"
-                        id="downloadCVBtn">Download My CV</a>
+                    <a class="btn btn-primary" style="border-color: white; border-radius: 20px;"
+                        href="Cv/CV_ANDHIKA PRATAMA PUTRA.pdf" id="downloadCVBtn">Download My CV</a>
                 </div>
             </div>
         </div>
@@ -862,7 +862,7 @@
     <script>
         document.getElementById('downloadCVBtn').addEventListener('click', function() {
 
-            window.location.href = 'Cv/cv.pdf';
+            window.location.href = 'Cv/CV_ANDHIKA PRATAMA PUTRA.pdf';
         });
     </script>
 
