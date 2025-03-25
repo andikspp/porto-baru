@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Mail;
+use Exception;
 
 class KontakController extends Controller
 {
@@ -29,14 +30,20 @@ class KontakController extends Controller
         // Kirim email
         $tujuan_email = "andhika2003.ap31@gmail.com"; // Ganti dengan alamat email yang valid
 
-        // Kirim email langsung dari controller
-        Mail::raw($emailContent, function ($message) use ($tujuan_email, $subject, $email, $name) {
-            $message->to($tujuan_email)
-                ->subject($subject)
-                ->from($email, $name);
-        });
+        try {
+            // Kirim email langsung dari controller
+            Mail::raw($emailContent, function ($message) use ($tujuan_email, $subject, $email, $name) {
+                $message->to($tujuan_email)
+                    ->subject($subject)
+                    ->from($email, $name);
+            });
 
-        // Redirect kembali ke halaman beranda setelah pengiriman
-        return redirect()->route('home')->with('status', 'success');
+            // Redirect kembali ke halaman beranda setelah pengiriman berhasil
+            return redirect()->route('home')->with('status', 'success');
+        } catch (Exception $e) {
+            // Tangani kesalahan jika gagal mengirim email
+            // Misalnya, log error atau tampilkan pesan error ke pengguna
+            return redirect()->route('home')->with('status', 'error')->with('message', 'Fitur sedang dalam perbaikan');
+        }
     }
 }

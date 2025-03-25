@@ -18,4 +18,3 @@ use App\Http\Controllers\HomeController;
 Route::get('/', [HomeController::class, 'index'])->name('home');
 
 Route::post('/proses-formulir', [KontakController::class, 'prosesFormulir'])->name('proses.formulir');
-
