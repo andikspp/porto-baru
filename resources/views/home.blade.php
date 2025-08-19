@@ -862,7 +862,7 @@
     <script>
         document.getElementById('downloadCVBtn').addEventListener('click', function() {
 
-            window.location.href = 'Cv/CV_ANDHIKA PRATAMA PUTRA.pdf';
+            window.location.href = 'cv/CV_ANDHIKA PRATAMA PUTRA.pdf';
         });
     </script>
 
