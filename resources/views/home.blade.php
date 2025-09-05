@@ -4,868 +4,1218 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Portfolio</title>
+    <title>Andhika Pratama Putra - Portfolio</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
         crossorigin="anonymous" />
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.css" crossorigin="anonymous" />
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
     <style>
-        .timeline {
-            list-style: none;
+        :root {
+            --primary-color: #2563eb;
+            --primary-dark: #1d4ed8;
+            --secondary-color: #64748b;
+            --accent-color: #f59e0b;
+            --text-dark: #1e293b;
+            --text-light: #64748b;
+            --bg-light: #f8fafc;
+            --bg-white: #ffffff;
+            --border-color: #e2e8f0;
+            --shadow-sm: 0 1px 3px 0 rgb(0 0 0 / 0.1);
+            --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1);
+            --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1);
+        }
+
+        * {
+            margin: 0;
             padding: 0;
+            box-sizing: border-box;
         }
 
-        .timeline-item {
+        body {
+            font-family: 'Inter', sans-serif;
+            line-height: 1.6;
+            color: var(--text-dark);
+            overflow-x: hidden;
+        }
+
+        /* Smooth scroll */
+        html {
+            scroll-behavior: smooth;
+        }
+
+        /* Modern Navbar */
+        .navbar {
+            background: rgba(255, 255, 255, 0.95) !important;
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid var(--border-color);
+            transition: all 0.3s ease;
+            padding: 1rem 0;
+        }
+
+        .navbar.scrolled {
+            background: rgba(255, 255, 255, 0.98) !important;
+            box-shadow: var(--shadow-md);
+        }
+
+        .navbar-brand {
+            font-weight: 700;
+            font-size: 1.5rem;
+            color: var(--primary-color) !important;
+        }
+
+        .nav-link {
+            color: var(--text-dark) !important;
+            font-weight: 500;
             position: relative;
-            padding-left: 40px;
-            margin-bottom: 40px;
+            transition: all 0.3s ease;
+            margin: 0 0.5rem;
         }
 
-        .timeline-date {
+        .nav-link:hover {
+            color: var(--primary-color) !important;
+        }
+
+        .nav-link::after {
+            content: '';
             position: absolute;
-            top: 0;
-            left: 0;
-            font-size: 16px;
-            font-weight: bold;
-            color: #04374F;
+            bottom: -5px;
+            left: 50%;
+            width: 0;
+            height: 2px;
+            background: var(--primary-color);
+            transition: all 0.3s ease;
+            transform: translateX(-50%);
         }
 
-        .timeline-content {
-            background-color: #F8F9FA;
-            padding: 20px;
-            border-radius: 10px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        .nav-link:hover::after {
+            width: 100%;
         }
 
-        .timeline-content h3 {
-            color: #04374F;
+        .navbar-nav .btn {
+            background: linear-gradient(135deg, var(--primary-color), var(--primary-dark));
+            border: none;
+            border-radius: 50px;
+            padding: 0.5rem 1.5rem;
+            color: white !important;
+            font-weight: 500;
+            transition: all 0.3s ease;
         }
 
-        .timeline-content p {
-            color: #6C757D;
-        }
-
-
-        @keyframes progress-animation {
-            0% {
-                width: 0%;
-            }
-        }
-
-        .progress-bar-animated {
-            animation: progress-animation 2s ease-out;
-        }
-
-        .typing-effect::after {
-            content: "|";
-            animation: typing 1s infinite steps(1);
-        }
-
-        @keyframes typing {
-            from {
-                width: 0;
-            }
-        }
-
-        .btn-primary {
-            background: linear-gradient(to right, #04374F, #01344C);
-            border-color: white;
-            border-radius: 20px;
-            transition: background 0.3s ease, color 0.3s ease, border-color 0.3s ease;
-        }
-
-        .btn-primary:hover {
-            background: white;
-            color: #01344C;
-            border-color: #04374F;
-        }
-
-        .social-icons {
-            display: flex;
-            gap: 20px;
+        .navbar-nav .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-md);
         }
 
         .social-icons a {
-            color: white;
-            text-decoration: none;
-            font-size: 20px;
+            color: var(--text-light);
+            font-size: 1.2rem;
+            margin: 0 0.5rem;
+            transition: all 0.3s ease;
+        }
+
+        .social-icons a:hover {
+            color: var(--primary-color);
+            transform: translateY(-2px);
+        }
+
+        /* Hero Section */
+        .hero {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
             display: flex;
             align-items: center;
+            position: relative;
+            overflow: hidden;
         }
 
-        h2.mb-4::after {
-            content: "";
-            display: block;
-            width: 40px;
-            height: 3px;
-
-            background-color: #04374F;
-
-            margin-top: 10px;
-
-            margin-left: calc(50% - 20px);
-
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 1000"><polygon fill="%23ffffff08" points="0,1000 1000,800 1000,1000"/></svg>');
+            background-size: cover;
         }
 
-        #skil h2.mb-4::after {
-            content: "";
-            display: block;
-            width: 40px;
-
-            height: 3px;
-
-            background-color: white;
-
-            margin-top: 10px;
-
-            margin-left: calc(50% - 20px);
-
+        .hero-content {
+            position: relative;
+            z-index: 2;
         }
 
-        #customPrevButton,
-        #customNextButton {
-            margin: 0 5px;
-        }
-
-        .button-container {
-            margin-top: 30px;
-            display: flex;
-            justify-content: center;
-            /* Membuat tombol berada di tengah secara horizontal */
-            gap: 10px;
-            /* Jarak antara tombol */
-        }
-
-        #kontak h2.mb-4::after {
-            content: "";
-            display: block;
-            width: 40px;
-
-            height: 3px;
-
-            background-color: white;
-
-            margin-top: 10px;
-
-            margin-left: calc(50% - 20px);
-
-        }
-
-        .rounded-icon {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            width: 50px;
-            height: 50px;
-            border-radius: 50%;
-            background-color: white;
-        }
-
-        .card-img-top {
-            width: 100%;
-            height: 200px;
-            /* Anda dapat sesuaikan tinggi sesuai kebutuhan */
-            object-fit: cover;
-            border-radius: 8px;
-            /* Tambahkan sudut melengkung jika diinginkan */
-        }
-
-
-        .carousel-control-prev-icon,
-        .carousel-control-next-icon {
-            background-color: #04374F;
+        .hero h1 {
+            font-size: 3.5rem;
+            font-weight: 700;
             color: white;
+            margin-bottom: 1rem;
+            line-height: 1.2;
+        }
+
+        .hero .lead {
+            font-size: 1.5rem;
+            color: rgba(255, 255, 255, 0.9);
+            margin-bottom: 2rem;
+        }
+
+        .typing-cursor::after {
+            content: "|";
+            color: var(--accent-color);
+            animation: blink 1s infinite;
+        }
+
+        @keyframes blink {
+
+            0%,
+            50% {
+                opacity: 1;
+            }
+
+            51%,
+            100% {
+                opacity: 0;
+            }
+        }
+
+        /* Modern Buttons */
+        .btn-modern {
+            background: linear-gradient(135deg, var(--primary-color), var(--primary-dark));
             border: none;
-            padding: 10px 20px;
+            border-radius: 50px;
+            padding: 1rem 2rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .btn-modern:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 25px rgba(37, 99, 235, 0.3);
+        }
+
+        .btn-modern::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            transition: left 0.5s;
+        }
+
+        .btn-modern:hover::before {
+            left: 100%;
+        }
+
+        /* Section Styling */
+        .section {
+            padding: 6rem 0;
+            position: relative;
+        }
+
+        .section-title {
+            text-align: center;
+            margin-bottom: 3rem;
+            position: relative;
+        }
+
+        .section-title h2 {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: var(--text-dark);
+            margin-bottom: 1rem;
+            position: relative;
+            display: inline-block;
+        }
+
+        .section-title h2::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 50%;
+            width: 60px;
+            height: 4px;
+            background: linear-gradient(135deg, var(--primary-color), var(--accent-color));
+            border-radius: 2px;
+            transform: translateX(-50%);
+        }
+
+        .section-subtitle {
+            font-size: 1.2rem;
+            color: var(--text-light);
+        }
+
+        /* Modern Cards */
+        .modern-card {
+            background: var(--bg-white);
             border-radius: 20px;
+            padding: 2rem;
+            box-shadow: var(--shadow-sm);
+            transition: all 0.3s ease;
+            border: 1px solid var(--border-color);
+            height: 100%;
         }
 
-        .footer {
-            padding-top: 30px;
+        .modern-card:hover {
+            transform: translateY(-10px);
+            box-shadow: var(--shadow-lg);
         }
 
-        .social-icons {
+        .modern-card .icon {
+            width: 70px;
+            height: 70px;
+            background: linear-gradient(135deg, var(--primary-color), var(--primary-dark));
+            border-radius: 50%;
             display: flex;
-            gap: 15px;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 1.5rem;
+            color: white;
+            font-size: 1.8rem;
         }
 
-        .social-icon {
-            font-size: 24px;
-            color: #fff;
-            transition: color 0.3s ease-in-out;
+        /* Skills Section */
+        .skills-section {
+            background: linear-gradient(135deg, var(--primary-color), var(--primary-dark));
+            color: white;
         }
 
-        .social-icon:hover {
-            color: #17a2b8;
+        .skill-item {
+            margin-bottom: 2rem;
+        }
+
+        .skill-name {
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .progress-modern {
+            height: 10px;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 10px;
+            overflow: hidden;
+        }
+
+        .progress-bar-modern {
+            height: 100%;
+            background: linear-gradient(90deg, var(--accent-color), #fbbf24);
+            border-radius: 10px;
+            transition: width 2s ease-in-out;
+            position: relative;
+        }
+
+        .progress-bar-modern::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+            animation: shimmer 2s infinite;
+        }
+
+        @keyframes shimmer {
+            0% {
+                transform: translateX(-100%);
+            }
+
+            100% {
+                transform: translateX(100%);
+            }
+        }
+
+        /* Timeline */
+        .timeline-modern {
+            position: relative;
+            padding-left: 2rem;
+        }
+
+        .timeline-modern::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0;
+            bottom: 0;
+            width: 2px;
+            background: linear-gradient(180deg, var(--primary-color), var(--accent-color));
+        }
+
+        .timeline-item-modern {
+            position: relative;
+            margin-bottom: 3rem;
+            background: var(--bg-white);
+            border-radius: 15px;
+            padding: 2rem;
+            box-shadow: var(--shadow-md);
+            border-left: 4px solid var(--primary-color);
+        }
+
+        .timeline-item-modern::before {
+            content: '';
+            position: absolute;
+            left: -2.5rem;
+            top: 2rem;
+            width: 12px;
+            height: 12px;
+            background: var(--primary-color);
+            border-radius: 50%;
+            border: 3px solid white;
+            box-shadow: var(--shadow-md);
+        }
+
+        /* Portfolio Grid */
+        .portfolio-item {
+            position: relative;
+            border-radius: 20px;
+            overflow: hidden;
+            margin-bottom: 2rem;
+            transition: all 0.3s ease;
+        }
+
+        .portfolio-item:hover {
+            transform: scale(1.05);
+        }
+
+        .portfolio-item img {
+            width: 100%;
+            height: 250px;
+            object-fit: cover;
+            transition: all 0.3s ease;
+        }
+
+        .portfolio-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(135deg, rgba(37, 99, 235, 0.9), rgba(168, 85, 247, 0.9));
+            opacity: 0;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+            color: white;
+            text-align: center;
+            padding: 2rem;
+        }
+
+        .portfolio-item:hover .portfolio-overlay {
+            opacity: 1;
+        }
+
+        /* Contact Form */
+        .contact-section {
+            background: linear-gradient(135deg, var(--text-dark), #334155);
+        }
+
+        .form-modern {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 20px;
+            padding: 3rem;
+            backdrop-filter: blur(10px);
+        }
+
+        .form-control-modern {
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 10px;
+            color: white;
+            padding: 1rem;
+            transition: all 0.3s ease;
+        }
+
+        .form-control-modern:focus {
+            background: rgba(255, 255, 255, 0.15);
+            border-color: var(--accent-color);
+            box-shadow: 0 0 0 0.2rem rgba(245, 158, 11, 0.25);
+            color: white;
+        }
+
+        .form-control-modern::placeholder {
+            color: rgba(255, 255, 255, 0.7);
+        }
+
+        /* Animations */
+        .fade-in-up {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 0.6s ease;
+        }
+
+        .fade-in-up.animate {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .hero h1 {
+                font-size: 2.5rem;
+            }
+
+            .hero .lead {
+                font-size: 1.2rem;
+            }
+
+            .section {
+                padding: 4rem 0;
+            }
+
+            .section-title h2 {
+                font-size: 2rem;
+            }
+        }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: var(--bg-light);
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: linear-gradient(135deg, var(--primary-color), var(--primary-dark));
+            border-radius: 4px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: var(--primary-dark);
         }
     </style>
 </head>
 
 <body>
-    <nav class="navbar navbar-expand-lg navbar-dark bg-dark navbar-dark fixed-top"
-        style="background: linear-gradient(to right, #083263, #061231);">
+    <!-- Modern Navigation -->
+    <nav class="navbar navbar-expand-lg fixed-top">
         <div class="container">
-            <a class="navbar-brand" href="#">Andhika Pratama Putra</a>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
-                aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <a class="navbar-brand" href="#">Andhika Pratama</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
                 <span class="navbar-toggler-icon"></span>
             </button>
 
             <div class="collapse navbar-collapse" id="navbarNav">
-                <ul class="navbar-nav ms-auto me-auto">
+                <ul class="navbar-nav mx-auto">
                     <li class="nav-item"><a class="nav-link" href="#about">About</a></li>
                     <li class="nav-item"><a class="nav-link" href="#services">Services</a></li>
                     <li class="nav-item"><a class="nav-link" href="#skills">Skills</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#experience">Experience</a></li>
                     <li class="nav-item"><a class="nav-link" href="#education">Education</a></li>
-                    <li class="nav-item"><a class="nav-link" href="#experience">Experiences</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#github">GitHub</a></li>
                     <li class="nav-item"><a class="nav-link" href="#portfolio">Portfolio</a></li>
                     <li class="nav-item"><a class="nav-link" href="#contact">Contact</a></li>
-                    <li class="nav-item">
-                        <a class="nav-link btn btn-primary" style="border-color: white; border-radius: 20px;"
-                            href="#" id="downloadCVBtn">Download My CV</a>
-                    </li>
                 </ul>
-                <div class="social-icons">
-                    <a href="https://api.whatsapp.com/send?phone=6282294317043" class="social-icon" target="_blank"><i
-                            class="fab fa-whatsapp"></i></a>
-                    <a href="https://www.instagram.com/andiks_pp/" class="social-icon" target="_blank"><i
-                            class="fab fa-instagram"></i></a>
-                    <a href="https://www.facebook.com/andhika.p.putra.796" class="social-icon" target="_blank"><i
-                            class="fab fa-facebook"></i></a>
-                    <a href="https://www.linkedin.com/in/andhika-pratama-putra-22b558200" class="social-icon"
-                        target="_blank"><i class="fab fa-linkedin"></i></a>
-                    <a href="https://www.github.com/andikspp" class="social-icon" target="_blank"><i
-                            class="fab fa-github"></i></a>
+
+                <div class="d-flex align-items-center">
+                    <div class="social-icons d-none d-lg-flex">
+                        <a href="https://github.com/andikspp" target="_blank"><i class="fab fa-github"></i></a>
+                        <a href="https://www.linkedin.com/in/andhika-pratama-putra-22b558200" target="_blank"><i
+                                class="fab fa-linkedin"></i></a>
+                        <a href="https://www.instagram.com/andiks_pp/" target="_blank"><i
+                                class="fab fa-instagram"></i></a>
+                    </div>
+                    <a href="cv/CV_ANDHIKA PRATAMA PUTRA.pdf" class="btn btn-modern ms-3 text-light">Download CV</a>
                 </div>
             </div>
         </div>
     </nav>
-    <header class="bg-dark text-white text-center pt-5"
-        style="background-image: url('assets/header.jpg'); background-size: cover; background-position: center;">
 
-        <div class="container" data-aos="zoom-in" data-aos-duration="1000">
-            <div class="row d-flex flex-row-reverse align-items-end">
-                <div class="col-md-12 p-5">
-                    <h3 class="mt-3 typing-effect"></h3>
-                    <p class="lead">
-                        Fullstack Web Developer
-                    </p>
-                    <a href="#contact" class="btn btn-primary btn-lg" style="border-color: white; border-radius: 20px;">
-                        Get in Touch</a>
-                </div>
-                {{-- <div class="col-md-6">
-                    <img src="assets/me.jpg" alt="Your Name" class="img-fluid rounded-circle" style="width: auto;">
-                </div> --}}
-            </div>
-        </div>
-    </header>
-
-    <section id="about" class="py-5">
-        <div class="container" data-aos="zoom-in" data-aos-duration="1000">
-            <h2 class="mb-4 text-center">About Me</h2>
-
-            <div class="row flex-row-reverse align-items-center">
-
-                <div class="col-md-4 ms-auto text-center">
-                    <div class="image-container">
-                        <img src="img/foto diri terbaru warna merah.png" alt="Andhika Pratama Putra"
-                            class="img-fluid rounded-circle w-50">
-                    </div>
-                </div>
-
-
-                <div class="col-md-8 p-5">
-                    <h3>Hello! I'm Andhika Pratama Putra</h3>
-                    <p>I'm a fullstack Web Developer. I'm currently a
-                        Bachelor's student in Software Engineering at IPB University, Indonesia. I have a passion in
-                        technology, especially in web development and i'm always excited to explore any new technologies
-                        within the field to enhance my skills.</p>
-                    <a class="btn btn-primary" style="border-color: white; border-radius: 20px;"
-                        href="Cv/CV_ANDHIKA PRATAMA PUTRA.pdf" id="downloadCVBtn">Download My CV</a>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <section id="services" class="py-5">
+    <!-- Hero Section -->
+    <section class="hero">
         <div class="container">
-            <h2 class="mb-4 text-center">Services</h2>
-            <p class="lead mb-4 text-center">What can I do for you?</p>
-            <div id="servicesCarousel" class="carousel slide" data-bs-ride="carousel" data-aos="fade-up"
-                data-aos-duration="1000">
-                <div class="carousel-inner">
-
-                    <div class="carousel-item active">
-                        <div class="row">
-
-                            <div class="col-md-4">
-                                <div class="card">
-                                    <i class="fas fa-laptop-code fa-5x text-center mb-4 mt-4"
-                                        style=" color: #083263;"></i>
-                                    <div class="card-body">
-                                        <h5 class="card-title text-center">Backend Web Development</h5>
-                                        <p class="card-text">I have experience in backend website development using
-                                            Node.js & Express.js, PHP, Laravel </p>
-                                    </div>
-                                </div>
-                            </div>
-
-
-                            <div class="col-md-4">
-                                <div class="card">
-                                    <i class="fas fa-laptop-code fa-5x text-center mb-4 mt-4"
-                                        style=" color: #083263;"></i>
-                                    <div class="card-body">
-                                        <h5 class="card-title text-center">Frontend Web Development</h5>
-                                        <p class="card-text">I have experience in frontend website development using
-                                            HTML, CSS, Bootstrap and React.js</p>
-                                    </div>
-                                </div>
-                            </div>
-
-
-                            <div class="col-md-4">
-                                <div class="card">
-                                    <i class="fas fa-paint-brush fa-5x text-center mb-4 mt-4"
-                                        style=" color: #083263;"></i>
-                                    <div class="card-body">
-                                        <h5 class="card-title text-center">Web Design</h5>
-                                        <p class="card-text">I have experience in designing website pages using Figma.
-                                        </p>
-                                    </div>
-                                </div>
-                            </div>
+            <div class="row align-items-center">
+                <div class="col-lg-8" data-aos="fade-up">
+                    <div class="hero-content">
+                        <h1 class="typing-cursor">Hello, I'm Andhika Pratama Putra</h1>
+                        <p class="lead">Fullstack Web Developer</p>
+                        <p class="mb-4" style="color: rgba(255, 255, 255, 0.8); font-size: 1.1rem;">
+                            Passionate about creating innovative web solutions with modern technologies
+                        </p>
+                        <div class="d-flex flex-wrap gap-3">
+                            <a href="#contact" class="btn btn-modern">Get In Touch</a>
+                            <a href="#portfolio" class="btn btn-outline-light btn-modern">View My Work</a>
                         </div>
                     </div>
                 </div>
-            </div>
-        </div>
-        </div>
-        </div>
-    </section>
-
-    <section id="skills" class="py-5">
-        <div class="container p-5" data-aos="fade-up" data-aos-duration="1000"
-            style="background: linear-gradient(to right, #04374F, #01344C);" id="skil">
-            <h2 class="mb-4 text-center text-white">My Skills</h2>
-            <p class="lead mb-4 text-center text-white">Elevating Your Project with Proven Skills</p>
-
-            <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-4">
-
-                <div class="col">
-                    <div class="card h-100">
-                        <div class="card-body">
-                            <h5 class="card-title">HTML</h5>
-                            <div class="progress">
-                                <div class="progress-bar progress-bar-animated" role="progressbar"
-                                    style="width: 100%; background: linear-gradient(to right, #04374F, #01344C);"
-                                    aria-valuenow="0" aria-valuemin="0" aria-valuemax="100">100%
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-
-                <div class="col">
-                    <div class="card h-100">
-                        <div class="card-body">
-                            <h5 class="card-title">CSS</h5>
-                            <div class="progress">
-                                <div class="progress-bar progress-bar-animated" role="progressbar"
-                                    style="width: 100%; background: linear-gradient(to right, #04374F, #01344C);"
-                                    aria-valuenow="0" aria-valuemin="0" aria-valuemax="100">100%
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-
-                <div class="col">
-                    <div class="card h-100">
-                        <div class="card-body">
-                            <h5 class="card-title">Javascript</h5>
-                            <div class="progress">
-                                <div class="progress-bar progress-bar-animated" role="progressbar"
-                                    style="width: 95%; background: linear-gradient(to right, #04374F, #01344C);"
-                                    aria-valuenow="0" aria-valuemin="0" aria-valuemax="100">95%
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="col">
-                    <div class="card h-100">
-                        <div class="card-body">
-                            <h5 class="card-title">PHP</h5>
-                            <div class="progress">
-                                <div class="progress-bar progress-bar-animated" role="progressbar"
-                                    style="width: 95%; background: linear-gradient(to right, #04374F, #01344C);"
-                                    aria-valuenow="0" aria-valuemin="0" aria-valuemax="100">95%
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="col">
-                    <div class="card h-100">
-                        <div class="card-body">
-                            <h5 class="card-title">Laravel</h5>
-                            <div class="progress">
-                                <div class="progress-bar progress-bar-animated" role="progressbar"
-                                    style="width: 95%; background: linear-gradient(to right, #04374F, #01344C);"
-                                    aria-valuenow="0" aria-valuemin="0" aria-valuemax="100">95%
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="col">
-                    <div class="card h-100">
-                        <div class="card-body">
-                            <h5 class="card-title">Node.js</h5>
-                            <div class="progress">
-                                <div class="progress-bar progress-bar-animated" role="progressbar"
-                                    style="width: 80%; background: linear-gradient(to right, #04374F, #01344C);"
-                                    aria-valuenow="0" aria-valuemin="0" aria-valuemax="100">80%
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="col">
-                    <div class="card h-100">
-                        <div class="card-body">
-                            <h5 class="card-title">Bootstrap</h5>
-                            <div class="progress">
-                                <div class="progress-bar progress-bar-animated" role="progressbar"
-                                    style="width: 95%; background: linear-gradient(to right, #04374F, #01344C);"
-                                    aria-valuenow="0" aria-valuemin="0" aria-valuemax="100">95%
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="col">
-                    <div class="card h-100">
-                        <div class="card-body">
-                            <h5 class="card-title">Express.js</h5>
-                            <div class="progress">
-                                <div class="progress-bar progress-bar-animated" role="progressbar"
-                                    style="width: 80%; background: linear-gradient(to right, #04374F, #01344C);"
-                                    aria-valuenow="0" aria-valuemin="0" aria-valuemax="100">80%
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="col">
-                    <div class="card h-100">
-                        <div class="card-body">
-                            <h5 class="card-title">React.js</h5>
-                            <div class="progress">
-                                <div class="progress-bar progress-bar-animated" role="progressbar"
-                                    style="width: 80%; background: linear-gradient(to right, #04374F, #01344C);"
-                                    aria-valuenow="0" aria-valuemin="0" aria-valuemax="100">80%
-                                </div>
-                            </div>
-                        </div>
+                <div class="col-lg-4" data-aos="fade-left" data-aos-delay="200">
+                    <div class="text-center">
+                        <img src="img/Foto SKL_Andhika Pratama Putra.jpg" alt="Andhika Pratama Putra"
+                            class="img-fluid rounded-circle"
+                            style="width: 300px; height: 300px; object-fit: cover; border: 5px solid rgba(255,255,255,0.2);">
                     </div>
                 </div>
             </div>
         </div>
     </section>
 
-    <section id="education" class="py-5">
+    <!-- About Section -->
+    <section id="about" class="section">
         <div class="container">
-            <h2 class="mb-4 text-center">Education</h2>
-
-            <!-- Education Item 1 -->
-            <div class="row mb-3" data-aos="fade-up" data-aos-duration="1000">
-                <div class="col-md-3">
-                    <p class="fw-bold">Year</p>
-                    <p>2021 - Present</p>
-                </div>
-                <div class="col-md-9">
-                    <h3>IPB University</h3>
-                    <p>Degree: Bachelor in Software Engineering Technology</p>
-                    <p>Location: Bogor, Indonesia</p>
-                </div>
+            <div class="section-title" data-aos="fade-up">
+                <h2>About Me</h2>
+                <p class="section-subtitle">Get to know me better</p>
             </div>
 
-            <!-- Education Item 2 -->
-            <div class="row mb-3" data-aos="fade-up" data-aos-duration="1000">
-                <div class="col-md-3">
-                    <p class="fw-bold">Year</p>
-                    <p>2018 - 2021</p>
+            <div class="row align-items-center">
+                <div class="col-lg-6" data-aos="fade-right">
+                    <h3 class="mb-4">Hello! I'm Andhika Pratama Putra</h3>
+                    <p>A fresh graduate in Software Engineering with strong foundations in web development, software
+                        architecture, and modern programming technologies, eager to contribute and grow in the software
+                        industry.</p>
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <div class="mb-3">
+                                <strong>Location:</strong><br>
+                                Bogor, Indonesia
+                            </div>
+                        </div>
+                        <div class="col-sm-6">
+                            <div class="mb-3">
+                                <strong>Email:</strong><br>
+                                andhika2003.ap31@gmail.com
+                            </div>
+                        </div>
+                    </div>
+                    <a href="cv/CV_ANDHIKA PRATAMA PUTRA.pdf" class="btn btn-modern text-light">Download
+                        My CV</a>
                 </div>
-                <div class="col-md-9">
-                    <h3>SMAN 37 Jakarta</h3>
-                    <p>Sciences and Mathematics</p>
-                    <p>Location: Jakarta, Indonesia</p>
+
+                <div class="col-lg-6" data-aos="fade-left" data-aos-delay="200">
+                    <div class="row g-4">
+                        <div class="col-6">
+                            <div class="modern-card text-center">
+                                <div class="icon">
+                                    <i class="fas fa-code"></i>
+                                </div>
+                                <h4>2+</h4>
+                                <p>Years Experience</p>
+                            </div>
+                        </div>
+                        <div class="col-6">
+                            <div class="modern-card text-center">
+                                <div class="icon">
+                                    <i class="fas fa-project-diagram"></i>
+                                </div>
+                                <h4>10+</h4>
+                                <p>Projects Completed</p>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
-
-            <div class="row mb-3" data-aos="fade-up" data-aos-duration="1000">
-                <div class="col-md-3">
-                    <p class="fw-bold">Year</p>
-                    <p>2015 - 2018</p>
-                </div>
-                <div class="col-md-9">
-                    <h3>SMPN 56 Jakarta</h3>
-                    <p>Location: Jakarta, Indonesia</p>
-                </div>
-            </div>
-
-            <div class="row mb-3" data-aos="fade-up" data-aos-duration="1000">
-                <div class="col-md-3">
-                    <p class="fw-bold">Year</p>
-                    <p>2009 - 2015</p>
-                </div>
-                <div class="col-md-9">
-                    <h3>SDN Kalimulya 3</h3>
-                    <p>Location: Depok, Indonesia</p>
-                </div>
-            </div>
-            <!-- Add more education items as needed -->
-
         </div>
     </section>
 
-
-    <section id="experience" class="py-5">
+    <!-- Services Section -->
+    <section id="services" class="section" style="background: var(--bg-light);">
         <div class="container">
-            <h2 class="mb-4 text-center">My Professional Journey</h2>
-            <p class="lead mb-4 text-center">Embark on a journey through my professional experiences, where I've
-                consistently delivered impactful solutions and exceeded client expectations.</p>
-            <ul class="timeline">
-                <li class="timeline-item" data-aos="fade-up" data-aos-duration="1000">
-                    <div class="timeline-date">2023 - Present</div>
-                    <div class="timeline-content">
-                        <h3>Freelance Web Developer</h3>
-                        <p>Darmawan Website Design</p>
-                        <p>Implementing the website design from UI/UX Figma to the frontend using HTML, CSS, Bootstrap,
-                            and JavaScript. Additionally, I also work on the backend using PHP and Laravel.</p>
-                    </div>
-                </li>
-            </ul>
-            <ul class="timeline">
-                <li class="timeline-item" data-aos="fade-up" data-aos-duration="1000">
-                    <div class="timeline-date">July 2024 - December 2024</div>
-                    <div class="timeline-content">
-                        <h3>Fullstack Web Developer Intern</h3>
-                        <p>Direktorat Guru PAUD dan Dikmas</p>
-                    </div>
-                </li>
-            </ul>
-            {{-- <div class="text-center mb-5">
-                <button id="seeMoreBtn" class="btn btn-primary"
-                    style="border-color: #04374F; border-radius: 20px;">See
-                    More</button>
-            </div> --}}
-        </div>
-    </section>
+            <div class="section-title" data-aos="fade-up">
+                <h2>Services</h2>
+                <p class="section-subtitle">What I can do for you</p>
+            </div>
 
-    <section id="certifications" class="py-5">
-        <div class="container">
-            <h2 class="mb-4 text-center">My Certifications</h2>
-            <p class="lead mb-4 text-center">Explore the certifications that demonstrate my dedication to continuous
-                learning and professional growth.</p>
-            <ul class="timeline">
-                <li class="timeline-item" data-aos="fade-up" data-aos-duration="1000">
-                    <div class="timeline-date">February 2024 - June 2024</div>
-                    <div class="timeline-content">
-                        <h3>Fullstack Web Development Certification</h3>
-                        <p>Gamelab by PT Educa Sisfomedia Indonesia</p>
-                        <p>Modul: Critical Thinking | Logika dan Algoritma Pemgrograman | HTML, CSS, JavaScript |
-                            Creativity |
-                            JavaScript dan jQuery | Bootstrap dan SASS | Communication Skill | PHP dan MySQL |
-                            Collaboration
-                            Skill | Laravel Framework</p>
-                        <p><strong>Valid Until:</strong> July 2027</p>
-                        <a href="https://gamelab.id/certificate/GL0461180707" target="_blank"
-                            class="btn btn-primary mt-3" style="border-radius: 20px;">View Certificate</a>
-                    </div>
-                </li>
-            </ul>
-        </div>
-    </section>
-
-
-    <section id="portfolio" class="py-5">
-        <div class="container">
-            <h2 class="mb-4 text-center">My Portfolio</h2>
-            <p class="lead mb-4 text-center">Discover My Works</p>
-            <div id="portfolioCarousel" class="carousel slide" data-bs-ride="carousel" data-aos="fade-up"
-                data-aos-duration="1000">
-                <div class="carousel-inner">
-
-                    <div class="carousel-item active">
-                        <div class="row">
-
-                            <div class="col-md-6">
-                                <div class="card h-100">
-                                    <img src="assets/tsu.png" class="card-img-top" alt="Project 1">
-                                    <div class="card-body">
-                                        <h5 class="card-title text-center">Techno Saintifik Utama Company Website
-                                        </h5>
-                                        <p class="text-justify">A company profile website for PT Techno Saintifik
-                                            Utama.</p>
-                                        <p class="text-justify"><strong>Technologies Used:</strong> Laravel,
-                                            Bootstrap, MySQL</p>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="col-md-6">
-                                <div class="card h-100">
-                                    <img src="assets/smartani.png" class="card-img-top" alt="Project 2">
-                                    <div class="card-body">
-                                        <h5 class="card-title text-center">Aplikasi SmarTani</h5>
-                                        <p class="text-justify">A website for finding plant recommendations based
-                                            on the user's geographical location. This project is part of my college
-                                            coursework.</p>
-                                        <p class="text-justify">
-                                            <strong>Technologies Used:</strong> PHP Native and MySQL
-                                        </p>
-                                    </div>
-                                </div>
-                            </div>
+            <div class="row g-4">
+                <div class="col-lg-4 col-md-6" data-aos="fade-up" data-aos-delay="100">
+                    <div class="modern-card text-center">
+                        <div class="icon">
+                            <i class="fas fa-laptop-code"></i>
                         </div>
-                    </div>
-
-                    <div class="carousel-item">
-                        <div class="row">
-                            <div class="col-md-6">
-                                <div class="card h-100">
-                                    <img src="img/sjt.png" class="card-img-top" alt="Project 3">
-                                    <div class="card-body">
-                                        <h5 class="card-title text-center">Aplikasi Situational Judgement Test</h5>
-                                        <p class="text-justify">Developed an online examination platform to
-                                            streamline the assessment process for Direktorat Guru PAUD dan Dikmas,
-                                            enhancing efficiency and accessibility. Implemented features like
-                                            real-time monitoring, automated grading, and result analysis to provide
-                                            a comprehensive solution for online assessments.</p>
-                                        <p class="text-justify">
-                                            <strong>Technologies Used:</strong> Laravel, MySQL, Bootstrap 5,
-                                            Javascript
-                                        </p>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-md-6">
-                                <div class="card h-100">
-                                    <img src="img/kegiatan.png" class="card-img-top" alt="Project 4">
-                                    <div class="card-body">
-                                        <h5 class="card-title text-center">Aplikasi Kegiatan Pegawai</h5>
-                                        <p class="text-justify">Developed a web-based employee activity management
-                                            system to streamline task tracking, activity management, and
-                                            productivity monitoring for staff at the Direktorat Guru PAUD dan
-                                            Dikmas. The system allows employees to efficiently manage institutional
-                                            activities and track participant data, including internal staff,
-                                            speakers, attendees, and event committees. It features a QR code-based
-                                            registration system to simplify event check-ins and includes an
-                                            automated biodata management feature for seamless participant
-                                            record-keeping. This comprehensive solution enhances operational
-                                            efficiency and provides real-time insights into event participation and
-                                            staff activities.</p>
-                                        <p class="text-justify">
-                                            <strong>Technologies Used:</strong> Laravel, Bootstrap, MySQL,
-                                            Javascript
-                                        </p>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
+                        <h4>Frontend Development</h4>
+                        <p>Creating responsive and interactive user interfaces using HTML, CSS, JavaScript, React.js,
+                            Next.js,
+                            and modern frameworks.</p>
                     </div>
                 </div>
 
-                <div class="button-container">
-                    <button id="customPrevButton" class="btn btn-primary">
-                        <i class="fas fa-chevron-left"></i> Previous
-                    </button>
-                    <button id="customNextButton" class="btn btn-primary">
-                        Next <i class="fas fa-chevron-right"></i>
-                    </button>
+                <div class="col-lg-4 col-md-6" data-aos="fade-up" data-aos-delay="200">
+                    <div class="modern-card text-center">
+                        <div class="icon">
+                            <i class="fas fa-server"></i>
+                        </div>
+                        <h4>Backend Development</h4>
+                        <p>Building robust server-side applications using PHP, Laravel, Node.js, Express.js, and
+                            database management.</p>
+                    </div>
                 </div>
 
+                <div class="col-lg-4 col-md-6" data-aos="fade-up" data-aos-delay="300">
+                    <div class="modern-card text-center">
+                        <div class="icon">
+                            <i class="fas fa-layer-group"></i>
+                        </div>
+                        <h4>Fullstack Development</h4>
+                        <p>Building complete web solutions from frontend to backend using modern technologies like
+                            Laravel, React.js, Node.js, and MySQL.</p>
+                    </div>
+                </div>
             </div>
         </div>
     </section>
 
+    <!-- Skills Section -->
+    <section id="skills" class="section skills-section">
+        <div class="container">
+            <div class="section-title" data-aos="fade-up">
+                <h2 style="color: white;">My Skills</h2>
+                <p class="section-subtitle" style="color: rgba(255,255,255,0.8);">Technologies I work with</p>
+            </div>
 
+            <div class="row">
+                <div class="col-lg-6" data-aos="fade-right">
+                    <div class="skill-item">
+                        <div class="skill-name">
+                            <span>HTML/CSS</span>
+                            <span>100%</span>
+                        </div>
+                        <div class="progress-modern">
+                            <div class="progress-bar-modern" style="width: 100%"></div>
+                        </div>
+                    </div>
 
+                    <div class="skill-item">
+                        <div class="skill-name">
+                            <span>JavaScript</span>
+                            <span>95%</span>
+                        </div>
+                        <div class="progress-modern">
+                            <div class="progress-bar-modern" style="width: 95%"></div>
+                        </div>
+                    </div>
 
-    <section id="contact" class="py-5" style="background: linear-gradient(to right, #04374F, #01344C);">
-        <div class="container text-white text-center" id="kontak">
-            <h2 class="mb-4">Contact Me</h2>
-            <div class="row d-flex align-items-center">
-                <div class="col-md-7 mt-5">
-                    <h4>Your Message Matters</h4>
-                    <form id="contactForm" style="max-width: 500px; margin: auto;" method="post"
-                        action="{{ route('proses.formulir') }}">
-                        @csrf <!-- Ini adalah directive Blade untuk melindungi aplikasi dari serangan CSRF -->
-                        <div class="mb-3">
-                            <label for="name" class="form-label text-end">Name</label>
-                            <input type="text" class="form-control" id="name" name="name" required>
+                    <div class="skill-item">
+                        <div class="skill-name">
+                            <span>PHP</span>
+                            <span>95%</span>
                         </div>
-                        <div class="mb-3">
-                            <label for="email" class="form-label text-end">Email</label>
-                            <input type="email" class="form-control" id="email" name="email" required>
+                        <div class="progress-modern">
+                            <div class="progress-bar-modern" style="width: 95%"></div>
                         </div>
+                    </div>
 
-                        <div class="mb-3">
-                            <label for="subject" class="form-label text-end">Subject</label>
-                            <input type="text" class="form-control" id="subject" name="subject" required>
+                    <div class="skill-item">
+                        <div class="skill-name">
+                            <span>Laravel</span>
+                            <span>95%</span>
                         </div>
-                        <div class="mb-3">
-                            <label for="message" class="form-label text-end">Message</label>
-                            <textarea class="form-control" id="message" name="message" rows="4" required></textarea>
+                        <div class="progress-modern">
+                            <div class="progress-bar-modern" style="width: 95%"></div>
                         </div>
+                    </div>
+
+                    <div class="skill-item">
+                        <div class="skill-name">
+                            <span>Next.js</span>
+                            <span>90%</span>
+                        </div>
+                        <div class="progress-modern">
+                            <div class="progress-bar-modern" style="width: 90%"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-lg-6" data-aos="fade-left" data-aos-delay="200">
+                    <div class="skill-item">
+                        <div class="skill-name">
+                            <span>React.js</span>
+                            <span>80%</span>
+                        </div>
+                        <div class="progress-modern">
+                            <div class="progress-bar-modern" style="width: 80%"></div>
+                        </div>
+                    </div>
+
+                    <div class="skill-item">
+                        <div class="skill-name">
+                            <span>Node.js</span>
+                            <span>80%</span>
+                        </div>
+                        <div class="progress-modern">
+                            <div class="progress-bar-modern" style="width: 80%"></div>
+                        </div>
+                    </div>
+
+                    <div class="skill-item">
+                        <div class="skill-name">
+                            <span>Bootstrap</span>
+                            <span>95%</span>
+                        </div>
+                        <div class="progress-modern">
+                            <div class="progress-bar-modern" style="width: 95%"></div>
+                        </div>
+                    </div>
+
+                    <div class="skill-item">
+                        <div class="skill-name">
+                            <span>MySQL</span>
+                            <span>90%</span>
+                        </div>
+                        <div class="progress-modern">
+                            <div class="progress-bar-modern" style="width: 90%"></div>
+                        </div>
+                    </div>
+
+                    <div class="skill-item">
+                        <div class="skill-name">
+                            <span>PostgreSQL</span>
+                            <span>90%</span>
+                        </div>
+                        <div class="progress-modern">
+                            <div class="progress-bar-modern" style="width: 90%"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        </div>
+    </section>
+
+    <!-- Experience Section -->
+    <section id="experience" class="section">
+        <div class="container">
+            <div class="section-title" data-aos="fade-up">
+                <h2>Experience</h2>
+                <p class="section-subtitle">My professional journey</p>
+            </div>
+
+            <div class="timeline-modern">
+                <div class="timeline-item-modern" data-aos="fade-up">
+                    <div class="d-flex justify-content-between align-items-start mb-3">
+                        <div>
+                            <h4>Fullstack Web Developer Intern</h4>
+                            <h6 class="text-primary">PT Altrusights Sahabat Digital</h6>
+                        </div>
+                        <span class="badge bg-primary">February 2025 - May 2025</span>
+                    </div>
+                    <p>Developed a web-based workshop management system encompassing work orders, sales, inventory, and
+                        warehouse modules using Laravel, MySQL, and modern frontend technologies.</p>
+                </div>
+
+                <div class="timeline-item-modern" data-aos="fade-up">
+                    <div class="d-flex justify-content-between align-items-start mb-3">
+                        <div>
+                            <h4>Fullstack Web Developer Intern</h4>
+                            <h6 class="text-primary">Direktorat Guru PAUD dan PNF</h6>
+                        </div>
+                        <span class="badge bg-primary">July 2024 - December 2024</span>
+                    </div>
+                    <p>Developed web-based applications including examination platforms and employee activity management
+                        systems using Laravel, MySQL, and modern frontend technologies.</p>
+                </div>
+
+                <div class="timeline-item-modern" data-aos="fade-up" data-aos-delay="200">
+                    <div class="d-flex justify-content-between align-items-start mb-3">
+                        <div>
+                            <h4>Freelance Web Developer</h4>
+                            <h6 class="text-primary">Darmawan Website Design</h6>
+                        </div>
+                        <span class="badge bg-primary">2023 - 2024</span>
+                    </div>
+                    <p>Implementing website designs from UI/UX Figma to frontend using HTML, CSS, Bootstrap, and
+                        JavaScript. Also working on backend development using PHP and Laravel.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Education Section -->
+    <section id="education" class="section" style="background: var(--bg-light);">
+        <div class="container">
+            <div class="section-title" data-aos="fade-up">
+                <h2>Education</h2>
+                <p class="section-subtitle">My academic background</p>
+            </div>
+
+            <div class="timeline-modern">
+                <div class="timeline-item-modern" data-aos="fade-up">
+                    <div class="d-flex justify-content-between align-items-start mb-3">
+                        <div>
+                            <h4>Bachelor of Applied Science (D4) Software Engineering</h4>
+                            <h6 class="text-primary">IPB University</h6>
+                        </div>
+                        <span class="badge bg-primary">2021 - 2025</span>
+                    </div>
+                    <p>Earned a Bachelor's degree in Software Engineering, specializing in web development, software
+                        architecture, and modern programming technologies.</p>
+                </div>
+
+                <div class="timeline-item-modern" data-aos="fade-up" data-aos-delay="200">
+                    <div class="d-flex justify-content-between align-items-start mb-3">
+                        <div>
+                            <h4>High School</h4>
+                            <h6 class="text-primary">SMAN 37 Jakarta</h6>
+                        </div>
+                        <span class="badge bg-primary">2018 - 2021</span>
+                    </div>
+                    <p>Graduated from high school with major in Science (IPA).</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- GitHub Activity Section - tambahkan setelah Education Section -->
+    <section id="github" class="section">
+        <div class="container">
+            <div class="section-title" data-aos="fade-up">
+                <h2>GitHub Activity</h2>
+                <p class="section-subtitle">My coding journey and contributions</p>
+            </div>
+
+            <div class="row g-4">
+                <!-- GitHub Stats -->
+                <div class="col-lg-6" data-aos="fade-up">
+                    <div class="modern-card">
+                        <h4 class="mb-4 text-center">GitHub Statistics</h4>
                         <div class="text-center">
-                            <button type="submit" class="btn btn-primary btn-lg"
-                                style="border-color: white; border-radius: 20px;">Send
-                                Message</button>
+                            <img src="https://github-readme-stats.vercel.app/api?username=andikspp&show_icons=true&theme=tokyonight&hide_border=true"
+                                alt="GitHub Stats" class="img-fluid rounded">
                         </div>
-                    </form>
+                    </div>
                 </div>
 
-                <div class="col-md-5 p-5">
-                    <div class="row mb-3 align-items-center">
-                        <h3>Address</h3>
-                        <span class="fs-5 fw-light">Bogor, Indonesia</span>
-                    </div>
-                    <div class="row mb-3 align-items-center">
-                        <h3>Email</h3>
-                        <span class="fs-5">andhika2003.ap31@gmail.com</span>
-                    </div>
-                    <div class="row mb-3 align-items-center">
-                        <h3>Phone</h3>
-                        <span class="fs-5">+6282294317043</span>
+                <!-- Most Used Languages -->
+                <div class="col-lg-6" data-aos="fade-up" data-aos-delay="200">
+                    <div class="modern-card">
+                        <h4 class="mb-4 text-center">Most Used Languages</h4>
+                        <div class="text-center">
+                            <img src="https://github-readme-stats.vercel.app/api/top-langs/?username=andikspp&layout=compact&theme=tokyonight&hide_border=true"
+                                alt="Top Languages" class="img-fluid rounded">
+                        </div>
                     </div>
                 </div>
-            </div>
-            <div class="row mt-5">
-                <h4 class="mb-4">Let's Connect</h4>
-                <div class="col d-flex justify-content-center">
-                    <div class="social-icons">
-                        <a href="https://api.whatsapp.com/send?phone=6282294317043" class="social-icon"
-                            target="_blank"><i class="fab fa-whatsapp"></i></a>
-                        <a href="https://www.instagram.com/andiks_pp/" class="social-icon" target="_blank"><i
-                                class="fab fa-instagram"></i></a>
-                        <a href="https://www.facebook.com/andhika.p.putra.796" class="social-icon" target="_blank"><i
-                                class="fab fa-facebook"></i></a>
-                        <a href="https://www.linkedin.com/in/andhika-pratama-putra-22b558200" class="social-icon"
-                            target="_blank"><i class="fab fa-linkedin"></i></a>
-                        <a href="https://www.github.com/andikspp" class="social-icon" target="_blank"><i
-                                class="fab fa-github"></i></a>
+
+                <!-- GitHub Streak -->
+                <div class="col-lg-12" data-aos="fade-up" data-aos-delay="300">
+                    <div class="modern-card">
+                        <h4 class="mb-4 text-center">Contribution Streak</h4>
+                        <div class="text-center">
+                            <img src="https://github-readme-streak-stats.herokuapp.com/?user=andikspp&theme=tokyonight&hide_border=true"
+                                alt="GitHub Streak" class="img-fluid rounded">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- GitHub Activity Graph -->
+                <div class="col-lg-12" data-aos="fade-up" data-aos-delay="400">
+                    <div class="modern-card">
+                        <h4 class="mb-4 text-center">Contribution Activity</h4>
+                        <div class="text-center">
+                            <img src="https://github-readme-activity-graph.vercel.app/graph?username=andikspp&theme=tokyo-night&hide_border=true&bg_color=1a1b27"
+                                alt="GitHub Activity Graph" class="img-fluid rounded">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Recent Repositories -->
+                <div class="col-lg-12" data-aos="fade-up" data-aos-delay="500">
+                    <div class="modern-card">
+                        <h4 class="mb-4 text-center">Featured Repositories</h4>
+                        <div class="row g-3">
+                            <div class="col-md-6">
+                                <div class="github-repo">
+                                    <img src="https://github-readme-stats.vercel.app/api/pin/?username=andikspp&repo=aplikasi-sjt&theme=tokyonight&hide_border=true"
+                                        alt="Repository" class="img-fluid rounded">
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="github-repo">
+                                    <img src="https://github-readme-stats.vercel.app/api/pin/?username=andikspp&repo=ecommerce-hpai-dika&theme=tokyonight&hide_border=true"
+                                        alt="Repository" class="img-fluid rounded">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row g-3">
+                            <div class="col-md-6">
+                                <div class="github-repo">
+                                    <img src="https://github-readme-stats.vercel.app/api/pin/?username=andikspp&repo=Himapolindo&theme=tokyonight&hide_border=true"
+                                        alt="Repository" class="img-fluid rounded">
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="github-repo">
+                                    <img src="https://github-readme-stats.vercel.app/api/pin/?username=andikspp&repo=smartani&theme=tokyonight&hide_border=true"
+                                        alt="Repository" class="img-fluid rounded">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="text-center mt-4">
+                            <a href="https://github.com/andikspp" target="_blank" class="btn btn-modern">
+                                <i class="fab fa-github me-2"></i>View All Repositories
+                            </a>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
     </section>
 
-    <footer class="bg-dark text-white text-center py-5"
-        style="background: linear-gradient(to right, #083263, #061231);">
+    <!-- Portfolio Section -->
+    <section id="portfolio" class="section" style="background: var(--bg-light);">
+        <div class="container">
+            <div class="section-title" data-aos="fade-up">
+                <h2>My Portfolio</h2>
+                <p class="section-subtitle">Some of my recent work</p>
+            </div>
+
+            <div class="row g-4">
+                <div class="col-lg-6" data-aos="fade-up">
+                    <a href="https://technosain.com/home" target="_blank" style="text-decoration: none;">
+                        <div class="portfolio-item">
+                            <img src="assets/tsu.png" alt="TSU Website">
+                            <div class="portfolio-overlay">
+                                <h4>Techno Saintifik Utama</h4>
+                                <p>Company profile website built with Laravel, Bootstrap, and MySQL</p>
+                                <div class="mt-3">
+                                    <span class="badge bg-light text-dark me-2">Laravel</span>
+                                    <span class="badge bg-light text-dark me-2">Bootstrap</span>
+                                    <span class="badge bg-light text-dark">MySQL</span>
+                                </div>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+
+                <div class="col-lg-6" data-aos="fade-up" data-aos-delay="200">
+                    <div class="portfolio-item">
+                        <img src="img/sjt.png" alt="SJT Application">
+                        <div class="portfolio-overlay">
+                            <h4>Situational Judgement Test</h4>
+                            <p>Online examination platform with real-time monitoring and automated grading</p>
+                            <div class="mt-3">
+                                <span class="badge bg-light text-dark me-2">Laravel</span>
+                                <span class="badge bg-light text-dark me-2">JavaScript</span>
+                                <span class="badge bg-light text-dark">Bootstrap</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-lg-6" data-aos="fade-up" data-aos-delay="300">
+                    <div class="portfolio-item">
+                        <img src="img/kegiatan.png" alt="Employee Activity App">
+                        <div class="portfolio-overlay">
+                            <h4>Employee Activity Management</h4>
+                            <p>Web-based system for managing staff activities with QR code registration</p>
+                            <div class="mt-3">
+                                <span class="badge bg-light text-dark me-2">Laravel</span>
+                                <span class="badge bg-light text-dark me-2">QR Code</span>
+                                <span class="badge bg-light text-dark">MySQL</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-lg-6" data-aos="fade-up" data-aos-delay="400">
+                    <div class="portfolio-item">
+                        <img src="assets/smartani.png" alt="SmarTani">
+                        <div class="portfolio-overlay">
+                            <h4>SmarTani Application</h4>
+                            <p>Plant recommendation system based on geographical location</p>
+                            <div class="mt-3">
+                                <span class="badge bg-light text-dark me-2">PHP</span>
+                                <span class="badge bg-light text-dark me-2">MySQL</span>
+                                <span class="badge bg-light text-dark">Geolocation</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row g-4">
+
+                <div class="col-lg-6" data-aos="fade-up" data-aos-delay="600">
+                    <a href="https://hpai-ika.my.id" target="_blank" style="text-decoration: none;">
+                        <div class="portfolio-item">
+                            <img src="img/e-commerce ika.png" alt="E-commerce HPAI Dika">
+                            <div class="portfolio-overlay">
+                                <h4>E-commerce HPAI Ika</h4>
+                                <p>Online store for herbal products with shopping cart, payment integration,
+                                    authentication,
+                                    checkout, shipping, etc</p>
+                                <div class="mt-3">
+                                    <span class="badge bg-light text-dark me-2">Next.Js</span>
+                                    <span class="badge bg-light text-dark me-2">Express.js</span>
+                                    <span class="badge bg-light text-dark">PostgreSQL</span>
+                                    <span class="badge bg-light text-dark">Tailwind CSS</span>
+                                </div>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section id="contact" class="section contact-section">
+        <div class="container">
+            <div class="section-title" data-aos="fade-up">
+                <h2 style="color: white;">Contact Me</h2>
+                <p class="section-subtitle" style="color: rgba(255,255,255,0.8);">Let's work together</p>
+            </div>
+
+            <div class="row">
+                <div class="col-lg-8 mx-auto">
+                    <div class="form-modern" data-aos="fade-up">
+                        <form method="post" action="{{ route('proses.formulir') }}">
+                            @csrf
+                            <div class="row g-3">
+                                <div class="col-md-6">
+                                    <input type="text" name="name" class="form-control form-control-modern"
+                                        placeholder="Your Name" required>
+                                </div>
+                                <div class="col-md-6">
+                                    <input type="email" name="email" class="form-control form-control-modern"
+                                        placeholder="Your Email" required>
+                                </div>
+                                <div class="col-12">
+                                    <input type="text" name="subject" class="form-control form-control-modern"
+                                        placeholder="Subject" required>
+                                </div>
+                                <div class="col-12">
+                                    <textarea name="message" rows="5" class="form-control form-control-modern" placeholder="Your Message"
+                                        required></textarea>
+                                </div>
+                                <div class="col-12 text-center">
+                                    <button type="submit" class="btn btn-modern text-light">Send Message</button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row mt-5" data-aos="fade-up" data-aos-delay="300">
+                <div class="col-md-4 text-center text-white mb-4">
+                    <div class="icon mb-3">
+                        <i class="fas fa-map-marker-alt fa-2x" style="color: var(--accent-color);"></i>
+                    </div>
+                    <h5>Address</h5>
+                    <p>Bogor, Indonesia</p>
+                </div>
+                <div class="col-md-4 text-center text-white mb-4">
+                    <div class="icon mb-3">
+                        <i class="fas fa-envelope fa-2x" style="color: var(--accent-color);"></i>
+                    </div>
+                    <h5>Email</h5>
+                    <p>andhika2003.ap31@gmail.com</p>
+                </div>
+                <div class="col-md-4 text-center text-white mb-4">
+                    <div class="icon mb-3">
+                        <i class="fas fa-phone fa-2x" style="color: var(--accent-color);"></i>
+                    </div>
+                    <h5>Phone</h5>
+                    <p>+62 822 9431 7043</p>
+                </div>
+            </div>
+
+            <div class="text-center mt-5" data-aos="fade-up" data-aos-delay="400">
+                <div class="social-icons">
+                    <a href="https://api.whatsapp.com/send?phone=6282294317043" target="_blank"
+                        style="color: white; font-size: 2rem; margin: 0 1rem;"><i class="fab fa-whatsapp"></i></a>
+                    <a href="https://www.instagram.com/andiks_pp/" target="_blank"
+                        style="color: white; font-size: 2rem; margin: 0 1rem;"><i class="fab fa-instagram"></i></a>
+                    <a href="https://www.linkedin.com/in/andhika-pratama-putra-22b558200" target="_blank"
+                        style="color: white; font-size: 2rem; margin: 0 1rem;"><i class="fab fa-linkedin"></i></a>
+                    <a href="https://github.com/andikspp" target="_blank"
+                        style="color: white; font-size: 2rem; margin: 0 1rem;"><i class="fab fa-github"></i></a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="py-4 text-center" style="background: var(--text-dark); color: white;">
         <div class="container">
             <p>&copy; 2025 Andhika Pratama Putra. All rights reserved.</p>
         </div>
     </footer>
 
-
-
+    <!-- Scripts -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.js" crossorigin="anonymous"></script>
-    <script src="https://cdn.jsdelivr.net/npm/typed.js@2.0.12"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
-
-
     <script>
-        AOS.init();
-    </script>
+        // Initialize AOS
+        AOS.init({
+            duration: 1000,
+            once: true
+        });
 
-    {{-- <script>
-            document.getElementById('seeMoreBtn').addEventListener('click', function() {
+        // Navbar scroll effect
+        window.addEventListener('scroll', function() {
+            const navbar = document.querySelector('.navbar');
+            if (window.scrollY > 50) {
+                navbar.classList.add('scrolled');
+            } else {
+                navbar.classList.remove('scrolled');
+            }
+        });
 
-                var hiddenItems = document.querySelectorAll('.timeline-item[hidden]');
-                hiddenItems.forEach(function(item) {
-                    item.removeAttribute('hidden');
-                });
-
-
-                this.style.display = 'none';
+        // Smooth scrolling for navigation links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function(e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
             });
-        </script> --}}
+        });
 
-    <script>
+        // Form submission alerts
         @if (session('status') === 'success')
             Swal.fire({
                 icon: 'success',
-                title: 'Berhasil!',
-                text: 'Pesan Anda telah berhasil dikirim.',
+                title: 'Success!',
+                text: 'Your message has been sent successfully.',
                 confirmButtonText: 'OK',
-                confirmButtonColor: '#3085d6',
+                confirmButtonColor: '#2563eb',
             });
         @elseif (session('status') === 'error')
             Swal.fire({
                 icon: 'error',
-                title: 'Gagal!',
+                title: 'Error!',
                 text: '{{ session('message') }}',
                 confirmButtonText: 'OK',
-                confirmButtonColor: '#d33',
+                confirmButtonColor: '#dc2626',
             });
         @endif
-        // Mengontrol carousel dengan tombol custom
-        document.getElementById('customPrevButton').addEventListener('click', function() {
-            const carousel = new bootstrap.Carousel(document.getElementById('portfolioCarousel'));
-            carousel.prev(); // Geser ke slide sebelumnya
-        });
 
-        document.getElementById('customNextButton').addEventListener('click', function() {
-            const carousel = new bootstrap.Carousel(document.getElementById('portfolioCarousel'));
-            carousel.next(); // Geser ke slide berikutnya
-        });
+        // Intersection Observer for animations
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
 
-        document.addEventListener('DOMContentLoaded', function() {
-            var typingEffect = document.querySelector('.typing-effect');
-            var textToType = "Andhika Pratama Putra";
-
-            typingEffect.textContent = '';
-
-            function typeText(index) {
-                if (index < textToType.length) {
-                    typingEffect.textContent += textToType.charAt(index);
-                    index++;
-                    setTimeout(function() {
-                        typeText(index);
-                    }, 100);
+        const observer = new IntersectionObserver(function(entries) {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('animate');
                 }
-            }
+            });
+        }, observerOptions);
 
-            typeText(0);
+        document.querySelectorAll('.fade-in-up').forEach(el => {
+            observer.observe(el);
         });
     </script>
-
-
-    <script>
-        document.getElementById('downloadCVBtn').addEventListener('click', function() {
-
-            window.location.href = 'cv/CV_ANDHIKA PRATAMA PUTRA.pdf';
-        });
-    </script>
-
 </body>
 
 </html>

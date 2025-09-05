@@ -2,48 +2,49 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Mail;
 use Exception;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Mail;
 
 class KontakController extends Controller
 {
     public function prosesFormulir(Request $request)
     {
         // Validasi formulir
-        $validatedData = $request->validate([
-            'name' => 'required',
-            'email' => 'required|email',
-            'subject' => 'required',
-            'message' => 'required',
+        $validated = $request->validate([
+            'name' => 'required|string|max:100',
+            'email' => 'required|email|max:100',
+            'subject' => 'required|string|max:150',
+            'message' => 'required|string|max:1000',
         ]);
 
-        // Ambil data dari formulir
-        $name = $request->input('name');
-        $email = $request->input('email');
-        $subject = $request->input('subject');
-        $messageContent = $request->input('message');
+        // Data dari formulir
+        $name = $validated['name'];
+        $email = $validated['email'];
+        $subject = $validated['subject'];
+        $messageContent = $validated['message'];
 
-        // Buat pesan email dengan informasi tambahan
+        // Konten email
         $emailContent = "Email pengirim: $email\n\n" . $messageContent;
 
-        // Kirim email
-        $tujuan_email = "andhika2003.ap31@gmail.com"; // Ganti dengan alamat email yang valid
+        $tujuan_email = "andhika2003.ap31@gmail.com";
 
         try {
-            // Kirim email langsung dari controller
+            // Kirim email menggunakan Mail::raw
             Mail::raw($emailContent, function ($message) use ($tujuan_email, $subject, $email, $name) {
                 $message->to($tujuan_email)
                     ->subject($subject)
-                    ->from($email, $name);
+                    ->replyTo($email, $name)
+                    ->from(config('mail.from.address'), config('mail.from.name'));
             });
 
-            // Redirect kembali ke halaman beranda setelah pengiriman berhasil
             return redirect()->route('home')->with('status', 'success');
-        } catch (Exception $e) {
-            // Tangani kesalahan jika gagal mengirim email
-            // Misalnya, log error atau tampilkan pesan error ke pengguna
-            return redirect()->route('home')->with('status', 'error')->with('message', 'Fitur sedang dalam perbaikan');
+        } catch (\Exception $e) {
+            // Log error agar mudah debug
+            Log::error('Gagal kirim email kontak: ' . $e->getMessage());
+
+            return redirect()->route('home')->with('status', 'error')->with('message', 'Gagal mengirim pesan. Silakan coba lagi nanti.');
         }
     }
 }
