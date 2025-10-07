@@ -27,19 +27,7 @@ class KontakController extends Controller
 
         $result = $response->json();
 
-        // Debug: Log respons dari Google
-        Log::info('reCAPTCHA Response:', $result);
-        Log::info('reCAPTCHA Token:', ['token' => $recaptcha]);
-        Log::info('Secret Key:', ['secret' => env('RECAPTCHA_SECRET_KEY')]);
-
         if (!$result['success']) {
-            // Log error codes untuk debugging
-            Log::error('reCAPTCHA Failed:', [
-                'error_codes' => $result['error-codes'] ?? [],
-                'success' => $result['success'],
-                'ip' => $request->ip()
-            ]);
-
             return back()->with(['status' => 'error', 'message' => 'reCAPTCHA verification failed. Please try again.']);
         }
 
