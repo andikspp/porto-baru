@@ -12,6 +12,9 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 
+    <!-- Google reCAPTCHA -->
+    <script src="https://www.google.com/recaptcha/api.js" async defer></script>
+
     <style>
         :root {
             --primary-color: #2563eb;
@@ -197,6 +200,7 @@
         .btn-modern:hover {
             transform: translateY(-3px);
             box-shadow: 0 10px 25px rgba(37, 99, 235, 0.3);
+            color: white !important;
         }
 
         .btn-modern::before {
@@ -496,6 +500,18 @@
         ::-webkit-scrollbar-thumb:hover {
             background: var(--primary-dark);
         }
+
+        /* Custom reCAPTCHA styling */
+        .g-recaptcha {
+            margin: 1rem 0;
+        }
+
+        @media (max-width: 768px) {
+            .g-recaptcha {
+                transform: scale(0.85);
+                transform-origin: center;
+            }
+        }
     </style>
 </head>
 
@@ -546,7 +562,7 @@
                             Passionate about creating innovative web solutions with modern technologies
                         </p>
                         <div class="d-flex flex-wrap gap-3">
-                            <a href="#contact" class="btn btn-modern">Get In Touch</a>
+                            <a href="#contact" class="btn btn-outline-light btn-modern">Get In Touch</a>
                             <a href="#portfolio" class="btn btn-outline-light btn-modern">View My Work</a>
                         </div>
                     </div>
@@ -1087,6 +1103,10 @@
                                 <div class="col-12">
                                     <textarea name="message" rows="5" class="form-control form-control-modern" placeholder="Your Message"
                                         required></textarea>
+                                </div>
+                                <!-- Google reCAPTCHA -->
+                                <div class="col-12 text-center">
+                                    <div class="g-recaptcha" data-sitekey="{{ env('RECAPTCHA_SITE_KEY') }}"></div>
                                 </div>
                                 <div class="col-12 text-center">
                                     <button type="submit" class="btn btn-modern text-light">Send Message</button>

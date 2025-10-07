@@ -5,12 +5,32 @@ namespace App\Http\Controllers;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Mail;
 
 class KontakController extends Controller
 {
     public function prosesFormulir(Request $request)
     {
+        // Validasi reCAPTCHA
+        $recaptcha = $request->input('g-recaptcha-response');
+        if (!$recaptcha) {
+            return back()->with(['status' => 'error', 'message' => 'Please complete the reCAPTCHA verification.']);
+        }
+
+        // Verifikasi reCAPTCHA dengan Google
+        $response = Http::post('https://www.google.com/recaptcha/api/siteverify', [
+            'secret' => env('RECAPTCHA_SECRET_KEY'),
+            'response' => $recaptcha,
+            'remoteip' => $request->ip()
+        ]);
+
+        $result = $response->json();
+
+        if (!$result['success']) {
+            return back()->with(['status' => 'error', 'message' => 'reCAPTCHA verification failed. Please try again.']);
+        }
+
         // Validasi formulir
         $validated = $request->validate([
             'name' => 'required|string|max:100',
