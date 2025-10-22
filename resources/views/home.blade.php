@@ -1010,7 +1010,7 @@
                 'id' => 'sjtModal',
                 'title' => 'Situational Judgement Test Platform',
                 'client' => 'Direktorat Guru PAUD dan PNF',
-                'Job Type' => 'Internship',
+                'Job Type' => 'Internship at Direktorat Guru PAUD dan PNF',
                 'image' => 'img/sjt.png',
                 'tech' => ['Laravel 10', 'MySQL', 'JavaScript', 'Bootstrap 5', 'Chart.js'],
                 'description' =>
@@ -1037,7 +1037,7 @@
                 'id' => 'activityModal',
                 'title' => 'Employee Activity Management System',
                 'client' => 'Direktorat Guru PAUD dan PNF',
-                'Job Type' => 'Internship',
+                'Job Type' => 'Internship at Direktorat Guru PAUD dan PNF',
                 'image' => 'img/kegiatan.png',
                 'tech' => ['Laravel 10', 'MySQL', 'QR Code API', 'Bootstrap 5'],
                 'description' =>
@@ -1085,6 +1085,32 @@
                 ],
                 'online' => true,
                 'url' => 'https://hpai-ika.my.id',
+            ],
+            [
+                'id' => 'sbbModal',
+                'title' => 'Sistem Manajemen Bengkel Berbasis Web',
+                'client' => 'PT Sinar Mas Bridgestone',
+                'Job Type' => 'Internship at PT Altrusights Sahabat Digital',
+                'image' => 'assets/sbb-adminhome.png',
+                'tech' => ['Laravel 10', 'MySQL', 'JavaScript', 'Bootstrap 5', 'jQuery', 'AJAX'],
+                'description' =>
+                    'Web-based workshop management system for work orders, sales, inventory, and warehouse modules.',
+                'features' => [
+                    'Work order management',
+                    'Sales tracking module',
+                    'Inventory management',
+                    'Warehouse operations module',
+                    'User role management',
+                    'Customer and vehicle management',
+                ],
+                'role' =>
+                    'Full-stack developer responsible for developing key modules and integrating frontend with backend services. I also collaborated with the team to design the database schema and ensure data integrity. I handled Sales and Work Order modules.',
+                'screenshots' => [
+                    ['src' => 'assets/sbb-wo.png', 'label' => 'Work Order Module'],
+                    ['src' => 'assets/sbb-penjualan.png', 'label' => 'Sales Module'],
+                ],
+                'online' => false,
+                'url' => null,
             ],
         ];
     @endphp
