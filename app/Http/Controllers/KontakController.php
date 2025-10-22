@@ -22,11 +22,6 @@ class KontakController extends Controller
         $siteKey = env('RECAPTCHA_SITE_KEY');
         $secretKey = env('RECAPTCHA_SECRET_KEY');
 
-        Log::info('reCAPTCHA Keys Check:', [
-            'site_key' => $siteKey,
-            'secret_key' => $secretKey
-        ]);
-
         $response = Http::asForm()->post('https://www.google.com/recaptcha/api/siteverify', [
             'secret' => $secretKey,
             'response' => $recaptcha,
@@ -34,9 +29,6 @@ class KontakController extends Controller
         ]);
 
         $result = $response->json();
-
-        // Debug: Log respons dari Google
-        Log::info('reCAPTCHA Response:', $result);
 
         if (!$result['success']) {
             Log::error('reCAPTCHA Failed:', [
@@ -87,4 +79,3 @@ class KontakController extends Controller
         }
     }
 }
-
