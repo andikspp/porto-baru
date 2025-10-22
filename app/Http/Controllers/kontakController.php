@@ -18,9 +18,12 @@ class KontakController extends Controller
             return back()->with(['status' => 'error', 'message' => 'Please complete the reCAPTCHA verification.']);
         }
 
-        // Verifikasi reCAPTCHA dengan Google
-        $response = Http::post('https://www.google.com/recaptcha/api/siteverify', [
-            'secret' => env('RECAPTCHA_SECRET_KEY'),
+        // Debug: Pastikan menggunakan key yang benar
+        $siteKey = env('RECAPTCHA_SITE_KEY');
+        $secretKey = env('RECAPTCHA_SECRET_KEY');
+
+        $response = Http::asForm()->post('https://www.google.com/recaptcha/api/siteverify', [
+            'secret' => $secretKey,
             'response' => $recaptcha,
             'remoteip' => $request->ip()
         ]);
@@ -28,6 +31,14 @@ class KontakController extends Controller
         $result = $response->json();
 
         if (!$result['success']) {
+            Log::error('reCAPTCHA Failed:', [
+                'error_codes' => $result['error-codes'] ?? [],
+                'success' => $result['success'],
+                'ip' => $request->ip(),
+                'site_key_used' => $siteKey,
+                'secret_key_used' => $secretKey
+            ]);
+
             return back()->with(['status' => 'error', 'message' => 'reCAPTCHA verification failed. Please try again.']);
         }
 
