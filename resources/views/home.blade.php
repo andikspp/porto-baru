@@ -978,6 +978,117 @@
         </div>
     </section>
 
+    {{-- Array data projects --}}
+    @php
+        $projects = [
+            [
+                'id' => 'tsuModal',
+                'title' => 'Techno Saintifik Utama',
+                'client' => 'PT Techno Saintifik Utama',
+                'Job Type' => 'Freelance',
+                'image' => 'assets/tsu.png',
+                'tech' => ['Laravel', 'Bootstrap', 'MySQL'],
+                'description' => 'Company profile website built with Laravel, Bootstrap, and MySQL.',
+                'features' => [
+                    'Responsive design',
+                    'Admin panel',
+                    'SEO optimized',
+                    'Content management system',
+                    'Secure Authentication',
+                ],
+                'role' =>
+                    'Front-End developer responsible for designing and implementing the user interface using Bootstrap and Laravel Blade templates.',
+                'screenshots' => [
+                    ['src' => 'assets/tsu-home.png', 'label' => 'Homepage'],
+                    ['src' => 'assets/tsu-about.png', 'label' => 'About Page'],
+                    ['src' => 'assets/tsu-gallery.png', 'label' => 'Gallery Page'],
+                ],
+                'online' => true,
+                'url' => 'https://technosain.com/home',
+            ],
+            [
+                'id' => 'sjtModal',
+                'title' => 'Situational Judgement Test Platform',
+                'client' => 'Direktorat Guru PAUD dan PNF',
+                'Job Type' => 'Internship',
+                'image' => 'img/sjt.png',
+                'tech' => ['Laravel 10', 'MySQL', 'JavaScript', 'Bootstrap 5', 'Chart.js'],
+                'description' =>
+                    'Comprehensive online examination platform developed for Direktorat Guru PAUD dan PNF.',
+                'features' => [
+                    'Real-time exam monitoring',
+                    'Automated grading system',
+                    'Multi-role user management',
+                    'Detailed analytics dashboard',
+                    'Export results to PDF/Excel',
+                    'History tracking and audit logs in Admin Panel',
+                ],
+                'role' =>
+                    'Full-stack developer responsible for both frontend and backend development, database design, and system architecture.',
+                'screenshots' => [
+                    ['src' => 'assets/sjt-dashboard.png', 'label' => 'Admin Dashboard'],
+                    ['src' => 'assets/sjt-exam.png', 'label' => 'Exam Interface'],
+                    ['src' => 'assets/sjt-results.png', 'label' => 'Results Analytics'],
+                ],
+                'online' => false,
+                'url' => null,
+            ],
+            [
+                'id' => 'activityModal',
+                'title' => 'Employee Activity Management System',
+                'client' => 'Direktorat Guru PAUD dan PNF',
+                'Job Type' => 'Internship',
+                'image' => 'img/kegiatan.png',
+                'tech' => ['Laravel 10', 'MySQL', 'QR Code API', 'Bootstrap 5'],
+                'description' =>
+                    'Staff activity management system with QR code integration for event registration and attendance tracking.',
+                'features' => [
+                    'QR Code registration system',
+                    'Real-time attendance tracking',
+                    'Activity management module',
+                    'Automated reports generation',
+                    'Mobile-responsive interface',
+                ],
+                'role' => 'Full-stack developer responsible for system design and implementation.',
+                'challenge' =>
+                    'Replaced manual paper-based attendance with digital QR system, reducing errors by 95% and saving 3+ hours daily.',
+                'screenshots' => [
+                    ['src' => 'assets/activity-dashboard.png', 'label' => 'Dashboard'],
+                    ['src' => 'assets/activity-qr-code.png', 'label' => 'Generate QR Code Page'],
+                    ['src' => 'assets/activity-management-page.png', 'label' => 'Activity Management Page'],
+                ],
+                'online' => false,
+                'url' => null,
+            ],
+            [
+                'id' => 'ecommerceModal',
+                'title' => 'E-commerce HPAI Ika',
+                'client' => 'Stokis (Distributor) produk herbal HPAI Ika',
+                'Job Type' => 'Freelance',
+                'image' => 'img/e-commerce ika.png',
+                'tech' => ['Next.js', 'Express.js', 'PostgreSQL', 'Tailwind CSS'],
+                'description' =>
+                    'Online store for herbal products with shopping cart, payment integration, authentication, checkout, shipping, etc.',
+                'features' => [
+                    'Product catalog management',
+                    'Shopping cart functionality',
+                    'Payment gateway integration',
+                    'User authentication',
+                    'Order tracking system',
+                    'Shipping integration',
+                ],
+                'role' => 'Full-stack developer responsible for both frontend and backend development.',
+                'screenshots' => [
+                    ['src' => 'assets/hpai-home.png', 'label' => 'Homepage'],
+                    ['src' => 'assets/hpai-produk.png', 'label' => 'Product Page'],
+                    ['src' => 'assets/hpai-cart.png', 'label' => 'Shopping Cart'],
+                ],
+                'online' => true,
+                'url' => 'https://hpai-ika.my.id',
+            ],
+        ];
+    @endphp
+
     <!-- Portfolio Section -->
     <section id="portfolio" class="section" style="background: var(--bg-light);">
         <div class="container">
@@ -987,92 +1098,123 @@
             </div>
 
             <div class="row g-4">
-                <div class="col-lg-6" data-aos="fade-up">
-                    <a href="https://technosain.com/home" target="_blank" style="text-decoration: none;">
-                        <div class="portfolio-item">
-                            <img src="assets/tsu.png" alt="TSU Website">
-                            <div class="portfolio-overlay">
-                                <h4>Techno Saintifik Utama</h4>
-                                <p>Company profile website built with Laravel, Bootstrap, and MySQL</p>
-                                <div class="mt-3">
-                                    <span class="badge bg-light text-dark me-2">Laravel</span>
-                                    <span class="badge bg-light text-dark me-2">Bootstrap</span>
-                                    <span class="badge bg-light text-dark">MySQL</span>
-                                </div>
-                            </div>
-                        </div>
-                    </a>
-                </div>
-
-                <div class="col-lg-6" data-aos="fade-up" data-aos-delay="200">
-                    <div class="portfolio-item">
-                        <img src="img/sjt.png" alt="SJT Application">
+                @foreach ($projects as $index => $project)
+                    <div class="col-lg-6" data-aos="fade-up" data-aos-delay="{{ ($index + 1) * 100 }}">
+                        @if ($project['online'])
+                            <div class="portfolio-item" data-bs-toggle="modal" data-bs-target="#{{ $project['id'] }}"
+                                style="cursor: pointer;">
+                            @else
+                                <div class="portfolio-item" data-bs-toggle="modal"
+                                    data-bs-target="#{{ $project['id'] }}" style="cursor: pointer;">
+                        @endif
+                        <img src="{{ $project['image'] }}" alt="{{ $project['title'] }}">
                         <div class="portfolio-overlay">
-                            <h4>Situational Judgement Test</h4>
-                            <p>Online examination platform with real-time monitoring and automated grading</p>
-                            <div class="mt-3">
-                                <span class="badge bg-light text-dark me-2">Laravel</span>
-                                <span class="badge bg-light text-dark me-2">JavaScript</span>
-                                <span class="badge bg-light text-dark">Bootstrap</span>
+                            <h4>{{ $project['title'] }}</h4>
+                            <p>{{ $project['description'] }}</p>
+                            <div class="mt-3 mb-3">
+                                @foreach ($project['tech'] as $tech)
+                                    <span class="badge bg-light text-dark me-2">{{ $tech }}</span>
+                                @endforeach
+                            </div>
+                            <div class="d-flex justify-content-center gap-2">
+                                <span class="btn btn-sm btn-outline-light">View Details</span>
+                                @if ($project['online'])
+                                    <a href="{{ $project['url'] }}" target="_blank" class="btn btn-sm btn-success"
+                                        onclick="event.stopPropagation();">
+                                        <i class="fas fa-external-link-alt me-1"></i>Visit Website
+                                    </a>
+                                @else
+                                    <span class="badge bg-warning">Private Project</span>
+                                @endif
                             </div>
                         </div>
                     </div>
-                </div>
-
-                <div class="col-lg-6" data-aos="fade-up" data-aos-delay="300">
-                    <div class="portfolio-item">
-                        <img src="img/kegiatan.png" alt="Employee Activity App">
-                        <div class="portfolio-overlay">
-                            <h4>Employee Activity Management</h4>
-                            <p>Web-based system for managing staff activities with QR code registration</p>
-                            <div class="mt-3">
-                                <span class="badge bg-light text-dark me-2">Laravel</span>
-                                <span class="badge bg-light text-dark me-2">QR Code</span>
-                                <span class="badge bg-light text-dark">MySQL</span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="col-lg-6" data-aos="fade-up" data-aos-delay="400">
-                    <div class="portfolio-item">
-                        <img src="assets/smartani.png" alt="SmarTani">
-                        <div class="portfolio-overlay">
-                            <h4>SmarTani Application</h4>
-                            <p>Plant recommendation system based on geographical location</p>
-                            <div class="mt-3">
-                                <span class="badge bg-light text-dark me-2">PHP</span>
-                                <span class="badge bg-light text-dark me-2">MySQL</span>
-                                <span class="badge bg-light text-dark">Geolocation</span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
             </div>
-            <div class="row g-4">
+            @endforeach
+        </div>
+        </div>
+    </section>
 
-                <div class="col-lg-6" data-aos="fade-up" data-aos-delay="600">
-                    <a href="https://hpai-ika.my.id" target="_blank" style="text-decoration: none;">
-                        <div class="portfolio-item">
-                            <img src="img/e-commerce ika.png" alt="E-commerce HPAI Dika">
-                            <div class="portfolio-overlay">
-                                <h4>E-commerce HPAI Ika</h4>
-                                <p>Online store for herbal products with shopping cart, payment integration,
-                                    authentication,
-                                    checkout, shipping, etc</p>
-                                <div class="mt-3">
-                                    <span class="badge bg-light text-dark me-2">Next.Js</span>
-                                    <span class="badge bg-light text-dark me-2">Express.js</span>
-                                    <span class="badge bg-light text-dark">PostgreSQL</span>
-                                    <span class="badge bg-light text-dark">Tailwind CSS</span>
+    {{-- Modal Portfolio Dinamis --}}
+    @foreach ($projects as $project)
+        <div class="modal fade" id="{{ $project['id'] }}" tabindex="-1">
+            <div class="modal-dialog modal-lg">
+                <div class="modal-content">
+                    <div class="modal-header border-0">
+                        <h5 class="modal-title">{{ $project['title'] }}</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <img src="{{ $project['image'] }}" class="img-fluid rounded mb-3"
+                                    alt="{{ $project['title'] }}">
+                                <div class="tech-stack mb-3">
+                                    <h6>Technologies Used:</h6>
+                                    @foreach ($project['tech'] as $tech)
+                                        <span class="badge bg-primary me-1">{{ $tech }}</span>
+                                    @endforeach
                                 </div>
+                                @if ($project['online'])
+                                    <a href="{{ $project['url'] }}" target="_blank"
+                                        class="btn btn-success mt-2 w-100">
+                                        <i class="fas fa-external-link-alt me-2"></i>Visit Website
+                                    </a>
+                                @else
+                                    <div class="alert alert-warning mt-2">
+                                        <i class="fas fa-lock me-2"></i>This is a private project and not publicly
+                                        accessible.
+                                    </div>
+                                @endif
+                            </div>
+                            <div class="col-md-6">
+                                <h6>Client:</h6>
+                                <p>{{ $project['client'] }}</p>
+
+                                <h6>Job Type:</h6>
+                                <p>{{ $project['Job Type'] }}</p>
+
+                                <h6>Project Description:</h6>
+                                <p>{{ $project['description'] }}</p>
+
+                                <h6>Key Features:</h6>
+                                <ul class="list-unstyled">
+                                    @foreach ($project['features'] as $feature)
+                                        <li><i class="fas fa-check text-success me-2"></i>{{ $feature }}</li>
+                                    @endforeach
+                                </ul>
+
+                                <h6>My Role:</h6>
+                                <p>{{ $project['role'] }}</p>
+
+                                @if (isset($project['challenge']))
+                                    <h6>Challenge Solved:</h6>
+                                    <p>{{ $project['challenge'] }}</p>
+                                @endif
                             </div>
                         </div>
-                    </a>
+
+                        @if (!empty($project['screenshots']))
+                            <!-- Screenshot Gallery -->
+                            <div class="mt-4">
+                                <h6>Screenshots:</h6>
+                                <div class="row g-2">
+                                    @foreach ($project['screenshots'] as $screenshot)
+                                        <div class="col-md-4">
+                                            <img src="{{ $screenshot['src'] }}" class="img-fluid rounded"
+                                                alt="{{ $screenshot['label'] }}">
+                                            <small
+                                                class="text-muted d-block text-center mt-1">{{ $screenshot['label'] }}</small>
+                                        </div>
+                                    @endforeach
+                                </div>
+                            </div>
+                        @endif
+                    </div>
                 </div>
             </div>
         </div>
-    </section>
+    @endforeach
 
     <!-- Contact Section -->
     <section id="contact" class="section contact-section">
