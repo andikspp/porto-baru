@@ -1268,8 +1268,7 @@
                 <div class="col-lg-5 order-1 order-lg-2 mb-4 mb-lg-0" data-aos="fade-left" data-aos-delay="200">
                     <div class="text-center">
                         <div class="hero-img-wrapper">
-                            <img src="img/Foto SKL_Andhika Pratama Putra.jpg" alt="Andhika Pratama Putra"
-                                class="hero-img">
+                            <img src="img/me.jpg" alt="Andhika Pratama Putra" class="hero-img">
                         </div>
                     </div>
                 </div>
