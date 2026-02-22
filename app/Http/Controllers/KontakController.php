@@ -18,7 +18,6 @@ class KontakController extends Controller
             return back()->with(['status' => 'error', 'message' => 'Please complete the reCAPTCHA verification.']);
         }
 
-        // Debug: Pastikan menggunakan key yang benar
         $siteKey = env('RECAPTCHA_SITE_KEY');
         $secretKey = env('RECAPTCHA_SECRET_KEY');
 
@@ -62,7 +61,6 @@ class KontakController extends Controller
         $tujuan_email = "andhika2003.ap31@gmail.com";
 
         try {
-            // Kirim email menggunakan Mail::raw
             Mail::raw($emailContent, function ($message) use ($tujuan_email, $subject, $email, $name) {
                 $message->to($tujuan_email)
                     ->subject($subject)
