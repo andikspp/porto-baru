@@ -48,11 +48,13 @@
             color: var(--text-dark);
             overflow-x: hidden;
             -webkit-font-smoothing: antialiased;
+            -webkit-tap-highlight-color: transparent;
         }
 
         html {
             scroll-behavior: smooth;
             scroll-padding-top: 80px;
+            overflow-x: hidden;
         }
 
         /* ==================== */
@@ -952,7 +954,7 @@
         }
 
         /* ============================= */
-        /* Responsive - Tablet (768px)   */
+        /* Responsive - Tablet (≤991px)  */
         /* ============================= */
         @media (max-width: 991px) {
             .navbar-collapse {
@@ -967,9 +969,10 @@
             }
 
             .nav-link {
-                padding: 0.6rem 1rem !important;
+                padding: 0.7rem 1rem !important;
                 border-radius: 10px;
                 margin: 0.1rem 0;
+                font-size: 0.95rem;
             }
 
             .nav-link:hover,
@@ -981,30 +984,46 @@
                 display: none;
             }
 
-            .d-flex.align-items-center {
+            /* Only target the navbar action area, not all flex containers */
+            .navbar .d-flex.align-items-center {
                 flex-direction: column;
                 gap: 0.75rem;
                 margin-top: 0.5rem;
+                width: 100%;
+            }
+
+            .navbar .d-flex.align-items-center .btn {
+                width: 100%;
+                text-align: center;
             }
 
             .social-icons {
                 display: flex !important;
-            }
-        }
-
-        @media (max-width: 768px) {
-            .hero {
-                min-height: auto;
-                padding: 100px 0 60px;
+                justify-content: center;
             }
 
             .hero h1 {
-                font-size: 2rem;
+                font-size: 2.4rem;
+            }
+        }
+
+        /* ============================= */
+        /* Responsive - Mobile (≤768px)  */
+        /* ============================= */
+        @media (max-width: 768px) {
+            .hero {
+                min-height: auto;
+                padding: 90px 0 50px;
+            }
+
+            .hero h1 {
+                font-size: 1.85rem;
                 text-align: center;
+                line-height: 1.3;
             }
 
             .hero .lead {
-                font-size: 1.15rem;
+                font-size: 1.1rem;
                 text-align: center;
             }
 
@@ -1012,7 +1031,11 @@
                 text-align: center;
                 margin-left: auto;
                 margin-right: auto;
-                font-size: 0.95rem;
+                font-size: 0.9rem;
+            }
+
+            .hero p[style] {
+                text-align: center !important;
             }
 
             .hero .d-flex.flex-wrap {
@@ -1020,39 +1043,114 @@
             }
 
             .hero-img {
-                width: 200px;
-                height: 200px;
+                width: 180px;
+                height: 180px;
+            }
+
+            .hero-img-wrapper::before {
+                inset: -6px;
             }
 
             .hero-shape:nth-child(1) {
-                width: 150px;
-                height: 150px;
+                width: 120px;
+                height: 120px;
             }
 
-            .hero-shape:nth-child(3) {
+            .hero-shape:nth-child(2) {
+                width: 100px;
+                height: 100px;
+            }
+
+            .hero-shape:nth-child(3),
+            .hero-shape:nth-child(4) {
                 display: none;
             }
 
             .section {
-                padding: 3.5rem 0;
+                padding: 3rem 0;
+            }
+
+            .section-title {
+                margin-bottom: 2rem;
             }
 
             .section-title h2 {
-                font-size: 1.75rem;
+                font-size: 1.6rem;
             }
 
             .section-subtitle {
-                font-size: 1rem;
+                font-size: 0.9rem;
             }
 
             .btn-modern {
-                padding: 0.75rem 1.5rem;
+                padding: 0.7rem 1.4rem;
                 font-size: 0.8rem;
             }
 
             .btn-hero {
-                padding: 0.75rem 1.5rem;
+                padding: 0.7rem 1.3rem;
                 font-size: 0.8rem;
+                width: 100%;
+                text-align: center;
+            }
+
+            /* About section */
+            #about h3 {
+                font-size: 1.3rem;
+                text-align: center;
+            }
+
+            #about p {
+                font-size: 0.9rem;
+            }
+
+            #about .col-lg-6:first-child {
+                text-align: center;
+            }
+
+            #about .btn-modern {
+                width: 100%;
+            }
+
+            /* Counter cards */
+            .counter-card {
+                padding: 1.25rem 1rem;
+            }
+
+            .counter-card .counter-value {
+                font-size: 1.8rem;
+            }
+
+            .counter-card .counter-label {
+                font-size: 0.8rem;
+            }
+
+            .counter-card .icon {
+                width: 50px;
+                height: 50px;
+                font-size: 1.2rem;
+                border-radius: 14px;
+            }
+
+            /* Modern cards */
+            .modern-card {
+                padding: 1.5rem;
+                border-radius: 16px;
+            }
+
+            .modern-card h4 {
+                font-size: 1.05rem;
+            }
+
+            .modern-card p {
+                font-size: 0.88rem;
+            }
+
+            .modern-card .icon {
+                width: 55px;
+                height: 55px;
+                font-size: 1.3rem;
+                border-radius: 14px;
             }
 
             /* Timeline mobile */
@@ -1061,17 +1159,30 @@
             }
 
             .timeline-item-modern {
-                padding: 1.25rem;
+                padding: 1.1rem;
             }
 
             .timeline-item-modern h4 {
-                font-size: 1rem;
+                font-size: 0.95rem;
+            }
+
+            .timeline-item-modern h6 {
+                font-size: 0.82rem;
+            }
+
+            .timeline-item-modern p {
+                font-size: 0.85rem;
             }
 
             .timeline-item-modern::before {
                 left: -2rem;
                 width: 10px;
                 height: 10px;
+            }
+
+            .timeline-badge {
+                font-size: 0.68rem;
+                padding: 0.25rem 0.65rem;
             }
 
             /* Portfolio mobile */
@@ -1081,6 +1192,10 @@
 
             .portfolio-info-mobile {
                 display: block;
+            }
+
+            .portfolio-item {
+                border-radius: 16px;
             }
 
             .portfolio-item img {
@@ -1095,10 +1210,37 @@
                 transform: none;
             }
 
+            /* Skills mobile */
+            .skills-section .skill-name {
+                font-size: 0.88rem;
+            }
+
+            .progress-modern {
+                height: 6px;
+            }
+
             /* Form mobile */
             .form-modern {
                 padding: 1.5rem;
                 border-radius: 16px;
+            }
+
+            .form-control-modern {
+                padding: 0.75rem 1rem;
+                font-size: 0.9rem;
+            }
+
+            /* Contact info */
+            .contact-section .social-icons a,
+            .contact-section .social-icons-bottom a {
+                font-size: 1.5rem !important;
+                margin: 0 0.6rem !important;
+            }
+
+            /* reCAPTCHA */
+            .g-recaptcha {
+                transform: scale(0.82);
+                transform-origin: center;
             }
 
             /* Back to top */
@@ -1107,60 +1249,254 @@
                 right: 20px;
                 width: 42px;
                 height: 42px;
-            }
-
-            .g-recaptcha {
-                transform: scale(0.85);
-                transform-origin: center;
-            }
-
-            .counter-card .counter-value {
-                font-size: 2rem;
-            }
-        }
-
-        @media (max-width: 576px) {
-            .hero h1 {
-                font-size: 1.7rem;
-            }
-
-            .hero .lead {
                 font-size: 1rem;
             }
 
-            .hero-img {
-                width: 160px;
-                height: 160px;
+            /* Footer mobile */
+            .footer {
+                padding: 1.5rem 0;
             }
 
-            .section {
-                padding: 3rem 0;
+            .footer h5 {
+                font-size: 1.1rem;
             }
 
-            .section-title h2 {
+            .footer-social a {
+                width: 38px;
+                height: 38px;
+                font-size: 1rem;
+            }
+        }
+
+        /* ============================= */
+        /* Responsive - Small (≤576px)   */
+        /* ============================= */
+        @media (max-width: 576px) {
+            .hero {
+                padding: 85px 0 40px;
+            }
+
+            .hero h1 {
                 font-size: 1.5rem;
             }
 
-            .modern-card {
-                padding: 1.5rem;
-                border-radius: 16px;
+            .hero .lead {
+                font-size: 0.95rem;
             }
 
-            .skills-section .skill-name {
+            .hero .subtitle-text {
                 font-size: 0.85rem;
             }
 
+            .hero p[style] {
+                font-size: 0.8rem !important;
+            }
+
+            .hero-img {
+                width: 150px;
+                height: 150px;
+                border-width: 3px;
+            }
+
+            .hero-img-wrapper::before {
+                inset: -5px;
+            }
+
+            .section {
+                padding: 2.5rem 0;
+            }
+
+            .section-title {
+                margin-bottom: 1.75rem;
+            }
+
+            .section-title h2 {
+                font-size: 1.35rem;
+            }
+
+            .section-title h2::after {
+                width: 40px;
+                height: 3px;
+            }
+
+            /* About section small screens */
+            .counter-card {
+                padding: 1rem 0.75rem;
+            }
+
+            .counter-card .icon {
+                width: 44px;
+                height: 44px;
+                font-size: 1rem;
+                border-radius: 12px;
+                margin-bottom: 0.75rem !important;
+            }
+
+            .counter-card .counter-value {
+                font-size: 1.5rem;
+            }
+
+            .counter-card .counter-label {
+                font-size: 0.72rem;
+            }
+
+            /* Modern cards */
+            .modern-card {
+                padding: 1.25rem;
+                border-radius: 14px;
+            }
+
+            .modern-card .icon {
+                width: 48px;
+                height: 48px;
+                font-size: 1.1rem;
+                border-radius: 12px;
+                margin-bottom: 1rem !important;
+            }
+
+            .modern-card h4 {
+                font-size: 1rem;
+            }
+
+            .modern-card p {
+                font-size: 0.82rem;
+            }
+
+            /* Skills */
+            .skills-section .skill-name {
+                font-size: 0.82rem;
+            }
+
+            .skill-item {
+                margin-bottom: 1.3rem;
+            }
+
+            /* Portfolio small */
             .portfolio-item img {
                 height: 160px;
             }
 
+            .portfolio-info-mobile {
+                padding: 0.85rem 1rem;
+            }
+
+            .portfolio-info-mobile h5 {
+                font-size: 0.9rem;
+            }
+
+            .portfolio-info-mobile p {
+                font-size: 0.75rem;
+            }
+
+            /* Contact */
             .contact-info-card {
                 padding: 1rem 0.75rem;
             }
 
+            .contact-info-card h5 {
+                font-size: 0.9rem;
+            }
+
             .contact-info-card p {
-                font-size: 0.8rem;
+                font-size: 0.78rem;
                 word-break: break-all;
+            }
+
+            /* reCAPTCHA extra small */
+            .g-recaptcha {
+                transform: scale(0.72);
+                transform-origin: center;
+            }
+
+            /* Timeline small */
+            .timeline-modern {
+                padding-left: 1.25rem;
+            }
+
+            .timeline-item-modern {
+                padding: 1rem;
+                border-left-width: 3px;
+            }
+
+            .timeline-item-modern::before {
+                left: -1.7rem;
+                width: 8px;
+                height: 8px;
+            }
+
+            .timeline-item-modern h4 {
+                font-size: 0.9rem;
+            }
+
+            .timeline-item-modern h6 {
+                font-size: 0.78rem;
+            }
+
+            .timeline-item-modern p {
+                font-size: 0.82rem;
+            }
+
+            .timeline-badge {
+                font-size: 0.62rem;
+                padding: 0.2rem 0.55rem;
+            }
+        }
+
+        /* ============================= */
+        /* Responsive - Extra Small      */
+        /* (≤400px, e.g. iPhone SE)      */
+        /* ============================= */
+        @media (max-width: 400px) {
+            .hero h1 {
+                font-size: 1.3rem;
+            }
+
+            .hero .lead {
+                font-size: 0.88rem;
+            }
+
+            .hero-img {
+                width: 130px;
+                height: 130px;
+            }
+
+            .btn-hero {
+                padding: 0.6rem 1rem;
+                font-size: 0.75rem;
+            }
+
+            .btn-modern {
+                padding: 0.6rem 1.2rem;
+                font-size: 0.75rem;
+            }
+
+            .section-title h2 {
+                font-size: 1.2rem;
+            }
+
+            .counter-card .counter-value {
+                font-size: 1.3rem;
+            }
+
+            .counter-card .counter-label {
+                font-size: 0.68rem;
+            }
+
+            .modern-card {
+                padding: 1rem;
+            }
+
+            .form-modern {
+                padding: 1.25rem;
+            }
+
+            .portfolio-item img {
+                height: 140px;
+            }
+
+            .g-recaptcha {
+                transform: scale(0.65);
+                transform-origin: center;
             }
         }
 
@@ -1186,13 +1522,70 @@
             font-size: 1.2rem;
         }
 
-        @media (max-width: 576px) {
+        @media (max-width: 768px) {
             .modal-dialog {
-                margin: 0.5rem;
+                margin: 0.75rem;
+                max-width: calc(100% - 1.5rem);
             }
 
             .modal-content {
                 border-radius: 16px;
+            }
+
+            .modal-body .row>.col-md-6:first-child {
+                margin-bottom: 1rem;
+            }
+
+            .modal-body img {
+                max-height: 200px;
+                object-fit: cover;
+            }
+
+            .modal-header {
+                padding: 1rem 1.25rem;
+            }
+
+            .modal-body {
+                padding: 0 1.25rem 1.25rem;
+                font-size: 0.9rem;
+            }
+
+            .modal-title {
+                font-size: 1.05rem;
+            }
+
+            .modal-body h6 {
+                font-size: 0.88rem;
+            }
+
+            .modal-body p {
+                font-size: 0.85rem;
+            }
+
+            .modal-body .badge {
+                font-size: 0.7rem;
+            }
+
+            /* Screenshots stacked */
+            .modal-body .row.g-2>.col-md-4 {
+                flex: 0 0 100%;
+                max-width: 100%;
+            }
+        }
+
+        @media (max-width: 576px) {
+            .modal-dialog {
+                margin: 0.5rem;
+                max-width: calc(100% - 1rem);
+            }
+
+            .modal-content {
+                border-radius: 14px;
+            }
+
+            .modal-body {
+                padding: 0 1rem 1rem;
+                font-size: 0.85rem;
             }
         }
     </style>
@@ -1255,7 +1648,7 @@
                         <p class="subtitle-text">
                             Passionate about creating innovative web solutions with modern technologies
                         </p>
-                        <div class="d-flex flex-wrap gap-3">
+                        <div class="d-flex flex-wrap gap-2 gap-sm-3">
                             <a href="#contact" class="btn btn-hero btn-hero-accent">
                                 <i class="fas fa-paper-plane me-2"></i>Get In Touch
                             </a>
@@ -1286,8 +1679,9 @@
 
             <div class="row align-items-center">
                 <div class="col-lg-6" data-aos="fade-right">
-                    <h3 class="mb-4">Hello! I'm Andhika Pratama Putra</h3>
-                    <p>A fresh graduate in Software Engineering with strong foundations in web development, software
+                    <h3 class="mb-3">Hello! I'm Andhika Pratama Putra</h3>
+                    <p class="mb-3" style="font-size: 0.95rem;">A fresh graduate in Software Engineering with strong
+                        foundations in web development, software
                         architecture, and modern programming technologies, eager to contribute and grow in the software
                         industry.</p>
                     <div class="row">
@@ -1308,8 +1702,8 @@
                         My CV</a>
                 </div>
 
-                <div class="col-lg-6" data-aos="fade-left" data-aos-delay="200">
-                    <div class="row g-4">
+                <div class="col-lg-6 mt-4 mt-lg-0" data-aos="fade-left" data-aos-delay="200">
+                    <div class="row g-3">
                         <div class="col-6">
                             <div class="counter-card">
                                 <div class="icon mx-auto mb-3">
@@ -1506,6 +1900,14 @@
             </div>
 
             <div class="timeline-modern">
+                <div class="timeline-item-modern" data-aos="fade-up">
+                    <div class="mb-2">
+                        <h4>IT Developer & IT Support</h4>
+                        <h6 class="text-primary mb-1">Daya Bahtera Sumatera & Group</h6>
+                        <span class="timeline-badge">November 2025 - Now</span>
+                    </div>
+                </div>
+
                 <div class="timeline-item-modern" data-aos="fade-up">
                     <div class="mb-2">
                         <h4>Fullstack Web Developer Intern</h4>
@@ -1971,40 +2373,49 @@
                 </div>
             </div>
 
-            <div class="row mt-5" data-aos="fade-up" data-aos-delay="300">
-                <div class="col-md-4 text-center text-white mb-4">
-                    <div class="icon mb-3">
-                        <i class="fas fa-map-marker-alt fa-2x" style="color: var(--accent-color);"></i>
+            <div class="row mt-4 g-3" data-aos="fade-up" data-aos-delay="300">
+                <div class="col-md-4 col-6 text-center text-white mb-3">
+                    <div class="contact-info-card h-100">
+                        <i class="fas fa-map-marker-alt fa-lg" style="color: var(--accent-color);"></i>
+                        <h5 class="mt-2" style="color: white;">Address</h5>
+                        <p style="color: rgba(255,255,255,0.7);">Bogor, Indonesia</p>
                     </div>
-                    <h5>Address</h5>
-                    <p>Bogor, Indonesia</p>
                 </div>
-                <div class="col-md-4 text-center text-white mb-4">
-                    <div class="icon mb-3">
-                        <i class="fas fa-envelope fa-2x" style="color: var(--accent-color);"></i>
+                <div class="col-md-4 col-6 text-center text-white mb-3">
+                    <div class="contact-info-card h-100">
+                        <i class="fas fa-envelope fa-lg" style="color: var(--accent-color);"></i>
+                        <h5 class="mt-2" style="color: white;">Email</h5>
+                        <p style="color: rgba(255,255,255,0.7); font-size: 0.78rem;">andhika2003.ap31@gmail.com</p>
                     </div>
-                    <h5>Email</h5>
-                    <p>andhika2003.ap31@gmail.com</p>
                 </div>
-                <div class="col-md-4 text-center text-white mb-4">
-                    <div class="icon mb-3">
-                        <i class="fas fa-phone fa-2x" style="color: var(--accent-color);"></i>
+                <div class="col-md-4 col-12 text-center text-white mb-3">
+                    <div class="contact-info-card h-100">
+                        <i class="fas fa-phone fa-lg" style="color: var(--accent-color);"></i>
+                        <h5 class="mt-2" style="color: white;">Phone</h5>
+                        <p style="color: rgba(255,255,255,0.7);">+62 822 9431 7043</p>
                     </div>
-                    <h5>Phone</h5>
-                    <p>+62 822 9431 7043</p>
                 </div>
             </div>
 
-            <div class="text-center mt-5" data-aos="fade-up" data-aos-delay="400">
-                <div class="social-icons">
-                    <a href="https://api.whatsapp.com/send?phone=6282294317043" target="_blank"
-                        style="color: white; font-size: 2rem; margin: 0 1rem;"><i class="fab fa-whatsapp"></i></a>
-                    <a href="https://www.instagram.com/andiks_pp/" target="_blank"
-                        style="color: white; font-size: 2rem; margin: 0 1rem;"><i class="fab fa-instagram"></i></a>
+            <div class="text-center mt-4" data-aos="fade-up" data-aos-delay="400">
+                <div class="footer-social"
+                    style="display: flex; justify-content: center; flex-wrap: wrap; gap: 0.5rem;">
+                    <a href="https://api.whatsapp.com/send?phone=6282294317043" target="_blank" aria-label="WhatsApp"
+                        style="background: rgba(255,255,255,0.1);">
+                        <i class="fab fa-whatsapp"></i>
+                    </a>
+                    <a href="https://www.instagram.com/andiks_pp/" target="_blank" aria-label="Instagram"
+                        style="background: rgba(255,255,255,0.1);">
+                        <i class="fab fa-instagram"></i>
+                    </a>
                     <a href="https://www.linkedin.com/in/andhika-pratama-putra-22b558200" target="_blank"
-                        style="color: white; font-size: 2rem; margin: 0 1rem;"><i class="fab fa-linkedin"></i></a>
-                    <a href="https://github.com/andikspp" target="_blank"
-                        style="color: white; font-size: 2rem; margin: 0 1rem;"><i class="fab fa-github"></i></a>
+                        aria-label="LinkedIn" style="background: rgba(255,255,255,0.1);">
+                        <i class="fab fa-linkedin"></i>
+                    </a>
+                    <a href="https://github.com/andikspp" target="_blank" aria-label="GitHub"
+                        style="background: rgba(255,255,255,0.1);">
+                        <i class="fab fa-github"></i>
+                    </a>
                 </div>
             </div>
         </div>
