@@ -12,33 +12,32 @@ class KontakController extends Controller
 {
     public function prosesFormulir(Request $request)
     {
-        // Validasi reCAPTCHA
-        $recaptcha = $request->input('g-recaptcha-response');
-        if (!$recaptcha) {
-            return back()->with(['status' => 'error', 'message' => 'Please complete the reCAPTCHA verification.']);
-        }
+        // Validasi reCAPTCHA hanya bila kredensialnya dikonfigurasi.
+        // Tanpa ini form tidak bisa dipakai di local yang belum punya key.
+        $secretKey = config('services.recaptcha.secret_key');
 
-        $siteKey = env('RECAPTCHA_SITE_KEY');
-        $secretKey = env('RECAPTCHA_SECRET_KEY');
+        if ($secretKey) {
+            $recaptcha = $request->input('g-recaptcha-response');
+            if (!$recaptcha) {
+                return back()->with(['status' => 'error', 'message' => 'Please complete the reCAPTCHA verification.']);
+            }
 
-        $response = Http::asForm()->post('https://www.google.com/recaptcha/api/siteverify', [
-            'secret' => $secretKey,
-            'response' => $recaptcha,
-            'remoteip' => $request->ip()
-        ]);
-
-        $result = $response->json();
-
-        if (!$result['success']) {
-            Log::error('reCAPTCHA Failed:', [
-                'error_codes' => $result['error-codes'] ?? [],
-                'success' => $result['success'],
-                'ip' => $request->ip(),
-                'site_key_used' => $siteKey,
-                'secret_key_used' => $secretKey
+            $response = Http::asForm()->post('https://www.google.com/recaptcha/api/siteverify', [
+                'secret' => $secretKey,
+                'response' => $recaptcha,
+                'remoteip' => $request->ip()
             ]);
 
-            return back()->with(['status' => 'error', 'message' => 'reCAPTCHA verification failed. Please try again.']);
+            $result = $response->json();
+
+            if (!($result['success'] ?? false)) {
+                Log::warning('reCAPTCHA verification failed', [
+                    'error_codes' => $result['error-codes'] ?? [],
+                    'ip' => $request->ip(),
+                ]);
+
+                return back()->with(['status' => 'error', 'message' => 'reCAPTCHA verification failed. Please try again.']);
+            }
         }
 
         // Validasi formulir

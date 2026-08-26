@@ -12,8 +12,10 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 
-    <!-- Google reCAPTCHA -->
-    <script src="https://www.google.com/recaptcha/api.js" async defer></script>
+    <!-- Google reCAPTCHA (hanya dimuat bila site key dikonfigurasi) -->
+    @if (config('services.recaptcha.site_key'))
+        <script src="https://www.google.com/recaptcha/api.js" async defer></script>
+    @endif
 
     <style>
         :root {
@@ -1588,6 +1590,192 @@
                 font-size: 0.85rem;
             }
         }
+
+        /* ==================== */
+        /* GitHub: Contribution graph */
+        /* ==================== */
+        .contrib-graph-wrap {
+            overflow-x: auto;
+            display: flex;
+            justify-content: center;
+            padding-bottom: 0.25rem;
+        }
+
+        .contrib-graph-img {
+            max-width: 100%;
+            height: auto;
+            min-width: 640px;
+            /* grafik 52 minggu butuh lebar minimum agar tidak gepeng; boks scroll di HP */
+        }
+
+        /* ==================== */
+        /* Portfolio lightbox    */
+        /* ==================== */
+        .shot-thumb {
+            position: relative;
+            display: block;
+            width: 100%;
+            border: none;
+            padding: 0;
+            background: none;
+            border-radius: 10px;
+            overflow: hidden;
+            cursor: zoom-in;
+        }
+
+        .shot-thumb img {
+            width: 100%;
+            aspect-ratio: 16 / 10;
+            object-fit: cover;
+            border-radius: 10px;
+            transition: transform .3s ease;
+        }
+
+        .shot-thumb::after {
+            content: "\f00e";
+            font-family: "Font Awesome 6 Free";
+            font-weight: 900;
+            position: absolute;
+            inset: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #fff;
+            font-size: 1.4rem;
+            background: rgba(15, 23, 42, .55);
+            opacity: 0;
+            transition: opacity .25s ease;
+            border-radius: 10px;
+        }
+
+        .shot-thumb:hover::after,
+        .shot-thumb:focus-visible::after {
+            opacity: 1;
+        }
+
+        .shot-thumb:hover img {
+            transform: scale(1.06);
+        }
+
+        .lightbox {
+            position: fixed;
+            inset: 0;
+            z-index: 2000;
+            background: rgba(8, 12, 24, .94);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            padding: 1rem;
+            /* aman dari notch / home indicator di ponsel */
+            padding-top: max(1rem, env(safe-area-inset-top));
+            padding-bottom: max(1rem, env(safe-area-inset-bottom));
+        }
+
+        .lightbox.open {
+            display: flex;
+        }
+
+        .lightbox-figure {
+            max-width: min(1100px, 100%);
+            max-height: 100%;
+            display: flex;
+            flex-direction: column;
+            gap: .75rem;
+            animation: lbIn .25s ease;
+        }
+
+        @keyframes lbIn {
+            from {
+                opacity: 0;
+                transform: scale(.96);
+            }
+
+            to {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+
+        .lightbox-figure img {
+            max-width: 100%;
+            max-height: calc(100vh - 9rem);
+            object-fit: contain;
+            border-radius: 12px;
+            box-shadow: 0 24px 60px rgba(0, 0, 0, .5);
+        }
+
+        .lightbox-caption {
+            color: #fff;
+            text-align: center;
+            font-size: .9rem;
+        }
+
+        .lightbox-caption .lb-count {
+            display: block;
+            color: rgba(255, 255, 255, .6);
+            font-size: .78rem;
+            margin-top: .15rem;
+        }
+
+        .lightbox-btn {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            border: none;
+            background: rgba(255, 255, 255, .14);
+            color: #fff;
+            font-size: 1.1rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: background .2s ease;
+        }
+
+        .lightbox-btn:hover {
+            background: rgba(255, 255, 255, .3);
+        }
+
+        .lightbox-prev {
+            left: 1rem;
+        }
+
+        .lightbox-next {
+            right: 1rem;
+        }
+
+        .lightbox-close {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            transform: none;
+        }
+
+        @media (max-width: 576px) {
+            .lightbox-btn {
+                width: 40px;
+                height: 40px;
+                font-size: .95rem;
+            }
+
+            .lightbox-prev {
+                left: .4rem;
+            }
+
+            .lightbox-next {
+                right: .4rem;
+            }
+
+            .lightbox-figure img {
+                max-height: calc(100vh - 11rem);
+            }
+
+            .contrib-graph-img {
+                min-width: 540px;
+            }
+        }
     </style>
 </head>
 
@@ -1617,8 +1805,6 @@
                         <a href="https://github.com/andikspp" target="_blank"><i class="fab fa-github"></i></a>
                         <a href="https://www.linkedin.com/in/andhika-pratama-putra-22b558200" target="_blank"><i
                                 class="fab fa-linkedin"></i></a>
-                        <a href="https://www.instagram.com/andiks_pp/" target="_blank"><i
-                                class="fab fa-instagram"></i></a>
                     </div>
                     <a href="cv/CV_ANDHIKA PRATAMA PUTRA.pdf" class="btn btn-modern ms-3 text-light">Download CV</a>
                 </div>
@@ -1782,28 +1968,11 @@
                 <p class="section-subtitle" style="color: rgba(255,255,255,0.8);">Technologies I work with</p>
             </div>
 
+            {{-- Persentase & urutan dihitung dari frekuensi pemakaian nyata di 9 project pada section Portfolio,
+                bukan angka self-rating sembarangan. Laravel/PHP muncul di 8/9 project, PostgreSQL & Tailwind CSS
+                jadi stack utama di 4 sistem produksi Daya Bahtera Sumatera saat ini. --}}
             <div class="row">
                 <div class="col-lg-6" data-aos="fade-right">
-                    <div class="skill-item">
-                        <div class="skill-name">
-                            <span>HTML/CSS</span>
-                            <span>100%</span>
-                        </div>
-                        <div class="progress-modern">
-                            <div class="progress-bar-modern" style="width: 100%"></div>
-                        </div>
-                    </div>
-
-                    <div class="skill-item">
-                        <div class="skill-name">
-                            <span>JavaScript</span>
-                            <span>95%</span>
-                        </div>
-                        <div class="progress-modern">
-                            <div class="progress-bar-modern" style="width: 95%"></div>
-                        </div>
-                    </div>
-
                     <div class="skill-item">
                         <div class="skill-name">
                             <span>PHP</span>
@@ -1826,11 +1995,41 @@
 
                     <div class="skill-item">
                         <div class="skill-name">
-                            <span>Next.js</span>
+                            <span>PostgreSQL</span>
                             <span>90%</span>
                         </div>
                         <div class="progress-modern">
                             <div class="progress-bar-modern" style="width: 90%"></div>
+                        </div>
+                    </div>
+
+                    <div class="skill-item">
+                        <div class="skill-name">
+                            <span>Tailwind CSS</span>
+                            <span>90%</span>
+                        </div>
+                        <div class="progress-modern">
+                            <div class="progress-bar-modern" style="width: 90%"></div>
+                        </div>
+                    </div>
+
+                    <div class="skill-item">
+                        <div class="skill-name">
+                            <span>MySQL</span>
+                            <span>85%</span>
+                        </div>
+                        <div class="progress-modern">
+                            <div class="progress-bar-modern" style="width: 85%"></div>
+                        </div>
+                    </div>
+
+                    <div class="skill-item">
+                        <div class="skill-name">
+                            <span>Alpine.js</span>
+                            <span>85%</span>
+                        </div>
+                        <div class="progress-modern">
+                            <div class="progress-bar-modern" style="width: 85%"></div>
                         </div>
                     </div>
                 </div>
@@ -1838,27 +2037,7 @@
                 <div class="col-lg-6" data-aos="fade-left" data-aos-delay="200">
                     <div class="skill-item">
                         <div class="skill-name">
-                            <span>React.js</span>
-                            <span>80%</span>
-                        </div>
-                        <div class="progress-modern">
-                            <div class="progress-bar-modern" style="width: 80%"></div>
-                        </div>
-                    </div>
-
-                    <div class="skill-item">
-                        <div class="skill-name">
-                            <span>Node.js</span>
-                            <span>80%</span>
-                        </div>
-                        <div class="progress-modern">
-                            <div class="progress-bar-modern" style="width: 80%"></div>
-                        </div>
-                    </div>
-
-                    <div class="skill-item">
-                        <div class="skill-name">
-                            <span>Bootstrap</span>
+                            <span>HTML/CSS</span>
                             <span>95%</span>
                         </div>
                         <div class="progress-modern">
@@ -1868,7 +2047,7 @@
 
                     <div class="skill-item">
                         <div class="skill-name">
-                            <span>MySQL</span>
+                            <span>JavaScript</span>
                             <span>90%</span>
                         </div>
                         <div class="progress-modern">
@@ -1878,11 +2057,41 @@
 
                     <div class="skill-item">
                         <div class="skill-name">
-                            <span>PostgreSQL</span>
-                            <span>90%</span>
+                            <span>Bootstrap</span>
+                            <span>85%</span>
                         </div>
                         <div class="progress-modern">
-                            <div class="progress-bar-modern" style="width: 90%"></div>
+                            <div class="progress-bar-modern" style="width: 85%"></div>
+                        </div>
+                    </div>
+
+                    <div class="skill-item">
+                        <div class="skill-name">
+                            <span>Next.js</span>
+                            <span>70%</span>
+                        </div>
+                        <div class="progress-modern">
+                            <div class="progress-bar-modern" style="width: 70%"></div>
+                        </div>
+                    </div>
+
+                    <div class="skill-item">
+                        <div class="skill-name">
+                            <span>React.js</span>
+                            <span>65%</span>
+                        </div>
+                        <div class="progress-modern">
+                            <div class="progress-bar-modern" style="width: 65%"></div>
+                        </div>
+                    </div>
+
+                    <div class="skill-item">
+                        <div class="skill-name">
+                            <span>Node.js</span>
+                            <span>60%</span>
+                        </div>
+                        <div class="progress-modern">
+                            <div class="progress-bar-modern" style="width: 60%"></div>
                         </div>
                     </div>
                 </div>
@@ -1902,10 +2111,27 @@
             <div class="timeline-modern">
                 <div class="timeline-item-modern" data-aos="fade-up">
                     <div class="mb-2">
-                        <h4>IT Developer & IT Support</h4>
+                        <h4>Fullstack Developer</h4>
                         <h6 class="text-primary mb-1">Daya Bahtera Sumatera & Group</h6>
                         <span class="timeline-badge">November 2025 - Now</span>
                     </div>
+                    <p class="mt-3 mb-2">Building and maintaining internal enterprise systems for a maritime and
+                        shipping group, using Laravel 11/12, Tailwind CSS, Alpine.js, and PostgreSQL. My work spans
+                        end-to-end feature delivery: database schema design, backend services, and the interfaces
+                        used daily by operations teams.</p>
+                    <ul class="list-unstyled mb-0 small">
+                        <li class="mb-1"><i class="fas fa-check text-success me-2"></i>Led the Bunker (marine fuel)
+                            ordering and delivery module in the Transportation Management System, covering
+                            multi-level approval flows and vessel fuel monitoring.</li>
+                        <li class="mb-1"><i class="fas fa-check text-success me-2"></i>Built a B2B sales and
+                            inventory platform with a full quotation-to-invoice pipeline, integrated with Accurate
+                            accounting software via OAuth.</li>
+                        <li class="mb-1"><i class="fas fa-check text-success me-2"></i>Developed attendance and
+                            employee permit modules for the internal HR portal, including data exports and
+                            fingerprint device integration.</li>
+                        <li class="mb-1"><i class="fas fa-check text-success me-2"></i>Delivered a multilingual
+                            corporate website with SEO sitemap support and a custom content management panel.</li>
+                    </ul>
                 </div>
 
                 <div class="timeline-item-modern" data-aos="fade-up">
@@ -1985,57 +2211,26 @@
             </div>
 
             <div class="row g-4">
-                <!-- GitHub Profile Card -->
+                <!-- Contribution Graph (di-generate live dari data GitHub, bukan gambar statis) -->
                 <div class="col-lg-12" data-aos="fade-up">
                     <div class="modern-card">
-                        <h4 class="mb-4 text-center">GitHub Profile</h4>
-                        <div id="github-profile-content" class="text-center py-3">
-                            <div class="spinner-border text-primary" role="status">
-                                <span class="visually-hidden">Loading...</span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- GitHub Stats (langsung dari API) -->
-                <div class="col-lg-6" data-aos="fade-up" data-aos-delay="100">
-                    <div class="modern-card h-100">
-                        <h4 class="mb-4 text-center">GitHub Statistics</h4>
-                        <div id="github-stats-content" class="text-center py-3">
-                            <div class="spinner-border text-primary" role="status">
-                                <span class="visually-hidden">Loading...</span>
-                            </div>
+                        <h4 class="mb-4 text-center">Contribution Graph</h4>
+                        <div class="contrib-graph-wrap">
+                            <img src="https://ghchart.rshah.org/2563eb/{{ config('services.github.username') }}"
+                                alt="Grafik kontribusi GitHub {{ config('services.github.username') }}"
+                                class="contrib-graph-img" loading="lazy">
                         </div>
                     </div>
                 </div>
 
                 <!-- Most Used Languages -->
-                <div class="col-lg-6" data-aos="fade-up" data-aos-delay="200">
+                <div class="col-lg-8 mx-auto" data-aos="fade-up" data-aos-delay="100">
                     <div class="modern-card h-100">
                         <h4 class="mb-4 text-center">Most Used Languages</h4>
                         <div id="github-langs-content" class="text-center py-3">
                             <div class="spinner-border text-primary" role="status">
                                 <span class="visually-hidden">Loading...</span>
                             </div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Featured Repositories -->
-                <div class="col-lg-12" data-aos="fade-up" data-aos-delay="300">
-                    <div class="modern-card">
-                        <h4 class="mb-4 text-center">Featured Repositories</h4>
-                        <div class="row g-3" id="repos-container">
-                            <div class="col-12 text-center py-3">
-                                <div class="spinner-border text-primary" role="status">
-                                    <span class="visually-hidden">Loading...</span>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="text-center mt-4">
-                            <a href="https://github.com/andikspp" target="_blank" class="btn btn-modern text-light">
-                                <i class="fab fa-github me-2"></i>View All Repositories
-                            </a>
                         </div>
                     </div>
                 </div>
@@ -2046,6 +2241,128 @@
     {{-- Array data projects --}}
     @php
         $projects = [
+            [
+                'id' => 'snnModal',
+                'title' => 'B2B Sales & Inventory Platform',
+                'client' => 'PT Sumber Niaga Nusantara (Daya Bahtera Sumatera & Group)',
+                'Job Type' => 'Fullstack Developer at Daya Bahtera Sumatera & Group',
+                'image' => 'assets/snn-cover.png',
+                'tech' => ['Laravel 11', 'PostgreSQL', 'Tailwind CSS', 'Alpine.js', 'Chart.js', 'REST API'],
+                'description' =>
+                    'B2B marine equipment platform combining a public product catalogue with a client portal and an internal sales, inventory, and procurement system.',
+                'features' => [
+                    'Quotation to proforma invoice and purchase order pipeline',
+                    'Client portal with catalogue, cart, quotes, and shipment tracking',
+                    'Multi-warehouse inventory and stock movement tracking',
+                    'Accurate accounting integration via OAuth with background sync',
+                    'Demand forecasting, sales performance, and demand heatmap analytics',
+                    'Automated PDF generation for quotes and product catalogues',
+                    'Sales commission tiers and landed cost calculation',
+                    'Activity logging and change request approval workflow',
+                ],
+                'role' =>
+                    'Lead developer and primary contributor with over 500 commits. Responsible for the full system: database schema design, service layer architecture, the Accurate ERP integration, and the entire admin and client-facing interface.',
+                'challenge' =>
+                    'Replaced a spreadsheet-driven sales process with an integrated pipeline, keeping stock and invoice data synchronised with the company accounting software automatically.',
+                'screenshots' => [
+                    // Ganti src di bawah dengan screenshot yang akan kamu input
+                    ['src' => 'assets/snn-dashboard.png', 'label' => 'Admin Dashboard'],
+                    ['src' => 'assets/snn-quote.png', 'label' => 'Quotation Management'],
+                    ['src' => 'assets/snn-inventory.png', 'label' => 'Inventory & Warehouse'],
+                ],
+                'online' => true,
+                'url' => 'https://snnindonesia.com',
+            ],
+            [
+                'id' => 'tmsModal',
+                'title' => 'Transportation Management System (TMS)',
+                'client' => 'Daya Bahtera Sumatera & Group',
+                'Job Type' => 'Fullstack Developer at Daya Bahtera Sumatera & Group',
+                'image' => 'assets/tms-cover.png',
+                'tech' => ['Laravel 12', 'PostgreSQL', 'Tailwind CSS', 'Alpine.js', 'Leaflet', 'Excel Export'],
+                'description' =>
+                    'Enterprise procurement and fleet operations system managing purchase orders, marine fuel bunkering, vessel tracking, and crew administration across the group.',
+                'features' => [
+                    'FOB and SPB purchase and delivery order management',
+                    'Bunker (marine fuel) ordering with multi-level approval flow',
+                    'Vessel fuel monitoring and consumption logging',
+                    'Vessel tracking with interactive maps and trip planning',
+                    'Crew management with documents and assignment scheduling',
+                    'Role-based access control across divisions and departments',
+                    'Telegram and email notification services',
+                    'Accurate accounting integration and Excel reporting',
+                ],
+                'role' =>
+                    'Core developer with over 400 commits, second largest contributor. Led the Bunker module end to end (FOB and SPB Bunker) covering controllers, approval logic, and interface, and built the vessel fuel monitoring feature. Also contributed to data models, migrations, and shared services.',
+                'challenge' =>
+                    'Digitised a manual, paper-based fuel requisition and approval chain into a tracked workflow with a clear audit trail across multiple divisions.',
+                'screenshots' => [
+                    // Ganti src di bawah dengan screenshot yang akan kamu input
+                    ['src' => 'assets/tms-bunker.png', 'label' => 'Bunker Order Module'],
+                    ['src' => 'assets/tms-fuel.png', 'label' => 'Vessel Fuel Monitoring'],
+                    ['src' => 'assets/tms-tracking.png', 'label' => 'Vessel Tracking'],
+                ],
+                'online' => false,
+                'url' => null,
+            ],
+            [
+                'id' => 'portalModal',
+                'title' => 'Employee Self-Service Portal',
+                'client' => 'Daya Bahtera Sumatera & Group',
+                'Job Type' => 'Fullstack Developer at Daya Bahtera Sumatera & Group',
+                'image' => 'assets/portal-cover.png',
+                'tech' => ['Laravel 11', 'PostgreSQL', 'Tailwind CSS', 'Alpine.js', 'Excel Export'],
+                'description' =>
+                    'Internal HR portal handling attendance, employee permits, company assets, announcements, and helpdesk tickets for staff across the group.',
+                'features' => [
+                    'Attendance tracking with fingerprint device integration',
+                    'Remote and on-site attendance with photo attachments',
+                    'Employee permit and leave request approval flow',
+                    'Company asset assignment and inventory logging',
+                    'Internal announcements and helpdesk ticketing',
+                    'Employee data management with organisational structure',
+                    'Excel and CSV data exports for HR reporting',
+                ],
+                'role' =>
+                    'Contributing developer focused on the attendance and employee permit modules, including their approval flows, reporting views, and Excel export functionality.',
+                'screenshots' => [
+                    // Ganti src di bawah dengan screenshot yang akan kamu input
+                    ['src' => 'assets/portal-attendance.png', 'label' => 'Attendance Module'],
+                    ['src' => 'assets/portal-permit.png', 'label' => 'Permit Request'],
+                    ['src' => 'assets/portal-dashboard.png', 'label' => 'Employee Dashboard'],
+                ],
+                'online' => false,
+                'url' => null,
+            ],
+            [
+                'id' => 'dbsComproModal',
+                'title' => 'DBS Group Corporate Website',
+                'client' => 'Daya Bahtera Sumatera & Group',
+                'Job Type' => 'Fullstack Developer at Daya Bahtera Sumatera & Group',
+                'image' => 'assets/dbs-cover.png',
+                'tech' => ['Laravel 12', 'PostgreSQL', 'Tailwind CSS', 'Alpine.js', 'Trix Editor'],
+                'description' =>
+                    'Multilingual corporate website for a maritime group, presenting their fleet, services, and projects, backed by a custom content management panel.',
+                'features' => [
+                    'Multilingual content with Indonesian and English support',
+                    'Fleet showcase with vessel specifications and galleries',
+                    'Services, projects, and client portfolio pages',
+                    'Blog and career listings with rich text editing',
+                    'Contact inbox for incoming enquiries',
+                    'Automatic SEO sitemap generation',
+                    'Custom admin panel for all site content',
+                ],
+                'role' =>
+                    'Fullstack developer and one of the two main contributors. Worked on the content management panel, the multilingual content structure, and the public-facing pages.',
+                'screenshots' => [
+                    // Ganti src di bawah dengan screenshot yang akan kamu input
+                    ['src' => 'assets/dbs-home.png', 'label' => 'Homepage'],
+                    ['src' => 'assets/dbs-fleet.png', 'label' => 'Fleet Page'],
+                    ['src' => 'assets/dbs-admin.png', 'label' => 'Admin Panel'],
+                ],
+                'online' => true,
+                'url' => 'https://dbsgroupid.com',
+            ],
             [
                 'id' => 'tsuModal',
                 'title' => 'Techno Saintifik Utama',
@@ -2311,14 +2628,23 @@
                         @if (!empty($project['screenshots']))
                             <!-- Screenshot Gallery -->
                             <div class="mt-4">
-                                <h6>Screenshots:</h6>
+                                <div class="d-flex align-items-center justify-content-between flex-wrap gap-2 mb-2">
+                                    <h6 class="mb-0">Screenshots:</h6>
+                                    <small class="text-muted"><i class="fas fa-hand-pointer me-1"></i>Klik gambar
+                                        untuk
+                                        memperbesar</small>
+                                </div>
                                 <div class="row g-2">
-                                    @foreach ($project['screenshots'] as $screenshot)
-                                        <div class="col-md-4">
-                                            <img src="{{ $screenshot['src'] }}" class="img-fluid rounded"
-                                                alt="{{ $screenshot['label'] }}">
+                                    @foreach ($project['screenshots'] as $i => $screenshot)
+                                        <div class="col-4">
+                                            <button type="button" class="shot-thumb"
+                                                data-gallery="{{ $project['id'] }}" data-index="{{ $i }}"
+                                                aria-label="Perbesar screenshot {{ $screenshot['label'] }}">
+                                                <img src="{{ $screenshot['src'] }}" loading="lazy"
+                                                    alt="{{ $screenshot['label'] }}">
+                                            </button>
                                             <small
-                                                class="text-muted d-block text-center mt-1">{{ $screenshot['label'] }}</small>
+                                                class="text-muted d-block text-center mt-1 small">{{ $screenshot['label'] }}</small>
                                         </div>
                                     @endforeach
                                 </div>
@@ -2329,6 +2655,31 @@
             </div>
         </div>
     @endforeach
+
+    {{-- Lightbox screenshot portofolio --}}
+    <div class="lightbox" id="lightbox" role="dialog" aria-modal="true" aria-label="Pratinjau screenshot">
+        <button type="button" class="lightbox-btn lightbox-close" id="lb-close" aria-label="Tutup">
+            <i class="fas fa-times"></i>
+        </button>
+        <button type="button" class="lightbox-btn lightbox-prev" id="lb-prev" aria-label="Sebelumnya">
+            <i class="fas fa-chevron-left"></i>
+        </button>
+        <button type="button" class="lightbox-btn lightbox-next" id="lb-next" aria-label="Berikutnya">
+            <i class="fas fa-chevron-right"></i>
+        </button>
+        <figure class="lightbox-figure m-0">
+            <img id="lb-img" src="" alt="">
+            <figcaption class="lightbox-caption">
+                <span id="lb-label"></span>
+                <span class="lb-count" id="lb-count"></span>
+            </figcaption>
+        </figure>
+    </div>
+
+    <script>
+        // Data galeri untuk lightbox, dibangun dari array $projects yang sama.
+        window.GALLERIES = @json(collect($projects)->mapWithKeys(fn($p) => [$p['id'] => $p['screenshots'] ?? []]));
+    </script>
 
     <!-- Contact Section -->
     <section id="contact" class="section contact-section">
@@ -2361,9 +2712,12 @@
                                         required></textarea>
                                 </div>
                                 <!-- Google reCAPTCHA -->
-                                <div class="col-12 text-center">
-                                    <div class="g-recaptcha" data-sitekey="{{ env('RECAPTCHA_SITE_KEY') }}"></div>
-                                </div>
+                                @if (config('services.recaptcha.site_key'))
+                                    <div class="col-12 text-center">
+                                        <div class="g-recaptcha"
+                                            data-sitekey="{{ config('services.recaptcha.site_key') }}"></div>
+                                    </div>
+                                @endif
                                 <div class="col-12 text-center">
                                     <button type="submit" class="btn btn-modern text-light">Send Message</button>
                                 </div>
@@ -2404,10 +2758,6 @@
                         style="background: rgba(255,255,255,0.1);">
                         <i class="fab fa-whatsapp"></i>
                     </a>
-                    <a href="https://www.instagram.com/andiks_pp/" target="_blank" aria-label="Instagram"
-                        style="background: rgba(255,255,255,0.1);">
-                        <i class="fab fa-instagram"></i>
-                    </a>
                     <a href="https://www.linkedin.com/in/andhika-pratama-putra-22b558200" target="_blank"
                         aria-label="LinkedIn" style="background: rgba(255,255,255,0.1);">
                         <i class="fab fa-linkedin"></i>
@@ -2435,8 +2785,6 @@
                                 class="fab fa-github"></i></a>
                         <a href="https://linkedin.com/in/andhika-pratama-putra" target="_blank"
                             aria-label="LinkedIn"><i class="fab fa-linkedin-in"></i></a>
-                        <a href="https://instagram.com/andikspp" target="_blank" aria-label="Instagram"><i
-                                class="fab fa-instagram"></i></a>
                     </div>
                 </div>
                 <div class="col-md-4 text-center text-md-end">
@@ -2609,8 +2957,45 @@
         // =====================
         // GitHub API Integration
         // =====================
-        const GITHUB_USERNAME = 'andikspp';
-        const FEATURED_REPOS = ['aplikasi-sjt', 'ecommerce-hpai-dika', 'Himapolindo', 'smartani'];
+        const GITHUB_USERNAME = @json(config('services.github.username'));
+
+        // GitHub API tanpa token dibatasi 60 request/jam per IP.
+        // Cache di sessionStorage supaya reload halaman tidak menghabiskan kuota.
+        const CACHE_TTL = 10 * 60 * 1000; // 10 menit
+
+        async function ghFetch(url) {
+            const key = 'gh:' + url;
+            try {
+                const hit = sessionStorage.getItem(key);
+                if (hit) {
+                    const {
+                        t,
+                        d
+                    } = JSON.parse(hit);
+                    if (Date.now() - t < CACHE_TTL) return d;
+                }
+            } catch {
+                /* sessionStorage bisa diblokir; lanjut fetch biasa */
+            }
+
+            const res = await fetch(url, {
+                headers: {
+                    Accept: 'application/vnd.github+json'
+                }
+            });
+            if (!res.ok) throw new Error('GitHub API ' + res.status);
+            const data = await res.json();
+
+            try {
+                sessionStorage.setItem(key, JSON.stringify({
+                    t: Date.now(),
+                    d: data
+                }));
+            } catch {
+                /* kuota storage penuh: abaikan */
+            }
+            return data;
+        }
 
         const LANG_COLORS = {
             'PHP': '#4F5D95',
@@ -2627,94 +3012,15 @@
             'SCSS': '#c6538c',
         };
 
-        async function fetchGithubProfile() {
+        async function fetchLanguages() {
+            const el = document.getElementById('github-langs-content');
             try {
-                const [userRes, reposRes] = await Promise.all([
-                    fetch(`https://api.github.com/users/${GITHUB_USERNAME}`),
-                    fetch(`https://api.github.com/users/${GITHUB_USERNAME}/repos?per_page=100`)
-                ]);
-                if (!userRes.ok) throw new Error();
-                const user = await userRes.json();
-                const repos = reposRes.ok ? await reposRes.json() : [];
-
-                const totalStars = repos.reduce((acc, r) => acc + r.stargazers_count, 0);
-                const totalForks = repos.reduce((acc, r) => acc + r.forks_count, 0);
-
-                document.getElementById('github-profile-content').innerHTML = `
-                    <div class="row align-items-center justify-content-center g-4">
-                        <div class="col-auto">
-                            <img src="${user.avatar_url}" alt="GitHub Avatar"
-                                class="rounded-circle shadow" style="width:90px;height:90px;object-fit:cover;">
-                        </div>
-                        <div class="col-auto text-start">
-                            <h5 class="mb-1 fw-bold">${user.name || user.login}</h5>
-                            <p class="text-muted small mb-2">${user.bio || ''}</p>
-                            <div class="d-flex gap-4 flex-wrap">
-                                <div class="text-center">
-                                    <h5 class="mb-0 text-primary fw-bold">${user.public_repos}</h5>
-                                    <small class="text-muted">Repos</small>
-                                </div>
-                                <div class="text-center">
-                                    <h5 class="mb-0 text-warning fw-bold">${totalStars}</h5>
-                                    <small class="text-muted">Stars</small>
-                                </div>
-                                <div class="text-center">
-                                    <h5 class="mb-0 text-success fw-bold">${totalForks}</h5>
-                                    <small class="text-muted">Forks</small>
-                                </div>
-                                <div class="text-center">
-                                    <h5 class="mb-0 text-info fw-bold">${user.followers}</h5>
-                                    <small class="text-muted">Followers</small>
-                                </div>
-                            </div>
-                        </div>
-                    </div>`;
-
-                renderStats(user, repos);
+                const repos = await ghFetch(`https://api.github.com/users/${GITHUB_USERNAME}/repos?per_page=100`);
                 renderLanguages(repos);
             } catch {
-                ['github-profile-content', 'github-stats-content', 'github-langs-content'].forEach(id => {
-                    const el = document.getElementById(id);
-                    if (el) el.innerHTML =
-                        `<a href="https://github.com/${GITHUB_USERNAME}" target="_blank" class="btn btn-dark btn-sm"><i class="fab fa-github me-2"></i>Visit GitHub Profile</a>`;
-                });
+                el.innerHTML =
+                    `<a href="https://github.com/${GITHUB_USERNAME}" target="_blank" class="btn btn-dark btn-sm"><i class="fab fa-github me-2"></i>Visit GitHub Profile</a>`;
             }
-        }
-
-        function renderStats(user, repos) {
-            const totalStars = repos.reduce((acc, r) => acc + r.stargazers_count, 0);
-            const totalForks = repos.reduce((acc, r) => acc + r.forks_count, 0);
-            document.getElementById('github-stats-content').innerHTML = `
-                <div class="row g-3 text-center px-2">
-                    <div class="col-6">
-                        <div class="p-3 rounded-3" style="background:var(--bg-light)">
-                            <i class="fas fa-book text-primary mb-1 d-block fs-4"></i>
-                            <h4 class="fw-bold mb-0 text-primary">${user.public_repos}</h4>
-                            <small class="text-muted">Public Repos</small>
-                        </div>
-                    </div>
-                    <div class="col-6">
-                        <div class="p-3 rounded-3" style="background:var(--bg-light)">
-                            <i class="fas fa-star text-warning mb-1 d-block fs-4"></i>
-                            <h4 class="fw-bold mb-0 text-warning">${totalStars}</h4>
-                            <small class="text-muted">Total Stars</small>
-                        </div>
-                    </div>
-                    <div class="col-6">
-                        <div class="p-3 rounded-3" style="background:var(--bg-light)">
-                            <i class="fas fa-code-branch text-success mb-1 d-block fs-4"></i>
-                            <h4 class="fw-bold mb-0 text-success">${totalForks}</h4>
-                            <small class="text-muted">Total Forks</small>
-                        </div>
-                    </div>
-                    <div class="col-6">
-                        <div class="p-3 rounded-3" style="background:var(--bg-light)">
-                            <i class="fas fa-users text-info mb-1 d-block fs-4"></i>
-                            <h4 class="fw-bold mb-0 text-info">${user.followers}</h4>
-                            <small class="text-muted">Followers</small>
-                        </div>
-                    </div>
-                </div>`;
         }
 
         function renderLanguages(repos) {
@@ -2749,55 +3055,99 @@
             document.getElementById('github-langs-content').innerHTML = `<div class="px-2">${bars}</div>`;
         }
 
-        async function fetchFeaturedRepos() {
-            const container = document.getElementById('repos-container');
-            try {
-                const results = await Promise.all(
-                    FEATURED_REPOS.map(repo =>
-                        fetch(`https://api.github.com/repos/${GITHUB_USERNAME}/${repo}`)
-                        .then(r => r.ok ? r.json() : null).catch(() => null)
-                    )
-                );
-                const repos = results.filter(Boolean);
-                if (!repos.length) throw new Error();
+        // =====================
+        // Lightbox screenshot portofolio
+        // =====================
+        (function() {
+            const lb = document.getElementById('lightbox');
+            if (!lb) return;
 
-                container.innerHTML = repos.map(repo => `
-                    <div class="col-md-6">
-                        <div class="p-3 rounded-3 border h-100" style="transition:box-shadow .2s"
-                            onmouseover="this.style.boxShadow='0 4px 16px rgba(37,99,235,.12)'"
-                            onmouseout="this.style.boxShadow='none'">
-                            <div class="d-flex align-items-center mb-2 gap-2">
-                                <i class="fab fa-github fs-5 text-dark"></i>
-                                <a href="${repo.html_url}" target="_blank"
-                                    class="fw-bold text-decoration-none text-dark">${repo.name}</a>
-                                ${repo.visibility === 'public'
-                                    ? '<span class="badge border text-muted ms-auto" style="font-size:.7rem">public</span>'
-                                    : '<span class="badge bg-warning text-dark ms-auto" style="font-size:.7rem">private</span>'}
-                            </div>
-                            <p class="text-muted small mb-3" style="min-height:2.5rem">${repo.description || 'No description available.'}</p>
-                            <div class="d-flex align-items-center gap-3 flex-wrap">
-                                ${repo.language ? `<span class="badge" style="background:${LANG_COLORS[repo.language]||'#6c757d'}">${repo.language}</span>` : ''}
-                                <small class="text-muted"><i class="fas fa-star text-warning me-1"></i>${repo.stargazers_count}</small>
-                                <small class="text-muted"><i class="fas fa-code-branch me-1"></i>${repo.forks_count}</small>
-                                <small class="text-muted ms-auto">
-                                    <i class="far fa-clock me-1"></i>${new Date(repo.updated_at).toLocaleDateString('id-ID',{day:'2-digit',month:'short',year:'numeric'})}
-                                </small>
-                            </div>
-                        </div>
-                    </div>`).join('');
-            } catch {
-                container.innerHTML = `
-                    <div class="col-12 text-center py-3">
-                        <p class="text-muted mb-2">Tidak dapat memuat repository saat ini.</p>
-                        <a href="https://github.com/${GITHUB_USERNAME}" target="_blank" class="btn btn-dark btn-sm">
-                            <i class="fab fa-github me-2"></i>Lihat di GitHub
-                        </a>
-                    </div>`;
+            const img = document.getElementById('lb-img');
+            const label = document.getElementById('lb-label');
+            const count = document.getElementById('lb-count');
+            let shots = [];
+            let idx = 0;
+            let lastFocus = null;
+
+            function show(i) {
+                if (!shots.length) return;
+                // bungkus supaya bisa berputar dari ujung ke ujung
+                idx = (i + shots.length) % shots.length;
+                const s = shots[idx];
+                img.src = s.src;
+                img.alt = s.label || '';
+                label.textContent = s.label || '';
+                count.textContent = `${idx + 1} / ${shots.length}`;
             }
-        }
 
-        fetchGithubProfile();
-        fetchFeaturedRepos();
+            function open(galleryId, startIndex) {
+                shots = (window.GALLERIES || {})[galleryId] || [];
+                if (!shots.length) return;
+                lastFocus = document.activeElement;
+                lb.classList.add('open');
+                // Bootstrap modal sudah mengunci scroll body; biarkan apa adanya saat modal terbuka.
+                document.body.style.overflow = 'hidden';
+                show(startIndex || 0);
+                document.getElementById('lb-close').focus();
+            }
+
+            function close() {
+                lb.classList.remove('open');
+                // Kembalikan scroll hanya bila tidak ada modal Bootstrap yang masih terbuka.
+                if (!document.querySelector('.modal.show')) {
+                    document.body.style.overflow = '';
+                }
+                img.src = '';
+                lastFocus?.focus();
+            }
+
+            document.addEventListener('click', (e) => {
+                const thumb = e.target.closest('.shot-thumb');
+                if (thumb) {
+                    e.preventDefault();
+                    open(thumb.dataset.gallery, parseInt(thumb.dataset.index, 10) || 0);
+                }
+            });
+
+            document.getElementById('lb-close').addEventListener('click', close);
+            document.getElementById('lb-prev').addEventListener('click', () => show(idx - 1));
+            document.getElementById('lb-next').addEventListener('click', () => show(idx + 1));
+
+            // Klik area gelap menutup lightbox, klik gambar tidak.
+            lb.addEventListener('click', (e) => {
+                if (e.target === lb) close();
+            });
+
+            document.addEventListener('keydown', (e) => {
+                if (!lb.classList.contains('open')) return;
+                if (e.key === 'Escape') {
+                    e.stopPropagation(); // jangan sampai modal Bootstrap ikut tertutup
+                    close();
+                } else if (e.key === 'ArrowLeft') {
+                    show(idx - 1);
+                } else if (e.key === 'ArrowRight') {
+                    show(idx + 1);
+                }
+            }, true);
+
+            // Swipe kiri/kanan di layar sentuh
+            let touchX = null;
+            lb.addEventListener('touchstart', (e) => {
+                touchX = e.changedTouches[0].clientX;
+            }, {
+                passive: true
+            });
+            lb.addEventListener('touchend', (e) => {
+                if (touchX === null) return;
+                const dx = e.changedTouches[0].clientX - touchX;
+                if (Math.abs(dx) > 50) show(dx > 0 ? idx - 1 : idx + 1);
+                touchX = null;
+            }, {
+                passive: true
+            });
+        })();
+
+        fetchLanguages();
     </script>
 </body>
 
